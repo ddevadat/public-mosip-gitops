@@ -42,5 +42,5 @@ output "workload" {
       bastion_public_ip                = module.operator.public_ip
     }
   }
-  sensitive = false
+  sensitive = true
 }
