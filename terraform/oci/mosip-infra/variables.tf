@@ -246,13 +246,13 @@ variable "obs_k8s_allow_rules_public_lb" {
 
 variable "obs_k8s_allow_rules_int_lb" {
   default = {
-    "Allow TCP ingress to public load balancers for https traffic from client" = {
+    "Allow TCP ingress to public load balancers for internal https traffic from client" = {
       protocol    = 6
       port        = 443
       source      = "10.0.0.0/16"
       source_type = "CIDR_BLOCK"
     },
-    "Allow TCP ingress to public load balancers for http traffic from client" = {
+    "Allow TCP ingress to public load balancers for internal http traffic from client" = {
       protocol    = 6
       port        = 80
       source      = "10.0.0.0/16"
