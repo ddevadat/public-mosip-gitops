@@ -39,8 +39,7 @@ inputs = {
   compartment_id               = local.env_vars.compartment_id
   vault_id                     = local.env_vars.vault_id
   vault_enc_key_id             = local.env_vars.vault_enc_key_id
-  ssh_public_key               = local.env_vars.ssh_public_key
-  ssh_private_key              = local.env_vars.ssh_private_key
+  k8s_cluster_properties       = local.env_vars.k8s_cluster_properties
   tags                         = local.tags
 }
 

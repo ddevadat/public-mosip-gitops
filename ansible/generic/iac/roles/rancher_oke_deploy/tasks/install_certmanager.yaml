@@ -53,3 +53,17 @@
     kubectl apply -f .
   args:
     chdir: /home/opc/certmanager/
+
+- name: Wait for Certificate to be Ready
+  ansible.builtin.command: >
+    kubectl wait --for=condition=Ready certificate/{{ domain | replace('.', '-') }}
+    --namespace=cert-manager --timeout=600s
+  register: cert_status
+  changed_when: false
+
+- name: Wait for Certificate to be Ready
+  ansible.builtin.command: >
+    kubectl wait --for=condition=Ready certificate/{{ domain | replace('.', '-') }}-stage
+    --namespace=cert-manager --timeout=600s
+  register: cert_status
+  changed_when: false

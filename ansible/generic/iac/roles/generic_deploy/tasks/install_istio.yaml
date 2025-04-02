@@ -112,3 +112,10 @@
     kubectl apply -f .
   args:
     chdir: /home/opc/istio/
+
+- name: Wait for Certificate to be Ready
+  ansible.builtin.command: >
+    kubectl wait --for=condition=Ready certificate/{{ domain | replace('.', '-') }}
+    --namespace=istio-system --timeout=600s
+  register: cert_status
+  changed_when: false
