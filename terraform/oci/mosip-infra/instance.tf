@@ -30,8 +30,8 @@ module "operator" {
   # kubeconfig          = yamlencode(local.kubeconfig_private)
   kubernetes_version = local.k8s_latest_version
   nsg_ids            = [oci_core_network_security_group.bastion.id]
-  ssh_private_key    = base64decode(var.ssh_private_key)
-  ssh_public_key     = var.ssh_public_key
+  ssh_private_key    = local.bastion_ssh_private_key
+  ssh_public_key     = local.bastion_ssh_public_key
   subnet_id          = local.public_subnet_id
   freeform_tags      = var.tags
 }

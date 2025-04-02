@@ -14,6 +14,15 @@ locals {
 }
 
 locals {
+
+  ssh_private_key         = tls_private_key.compute_ssh_key.private_key_pem
+  ssh_public_key          = tls_private_key.compute_ssh_key.public_key_openssh
+  bastion_ssh_private_key = lookup(var.bastion_properties, "ssh_private_key", local.ssh_private_key)
+  bastion_ssh_public_key  = lookup(var.bastion_properties, "ssh_public_key", local.ssh_public_key)
+
+}
+
+locals {
   default_worker_pools = {
     workload = {
       create           = true
@@ -202,8 +211,8 @@ locals {
   oke_k8s_allow_rules_public_lb = lookup(var.k8s_cluster_properties, "k8s_allow_rules_public_lb", var.k8s_allow_rules_public_lb)
   oke_k8s_allow_rules_int_lb    = lookup(var.k8s_cluster_properties, "k8s_allow_rules_int_lb", var.k8s_allow_rules_int_lb)
   oke_tags                      = lookup(var.k8s_cluster_properties, "tags", var.tags)
-  oke_ssh_private_key           = lookup(var.k8s_cluster_properties, "ssh_private_key", var.ssh_private_key)
-  oke_ssh_public_key            = lookup(var.k8s_cluster_properties, "ssh_public_key", var.ssh_public_key)
+  oke_ssh_private_key           = lookup(var.k8s_cluster_properties, "ssh_private_key", local.ssh_private_key)
+  oke_ssh_public_key            = lookup(var.k8s_cluster_properties, "ssh_public_key", local.ssh_public_key)
   oke_allow_worker_ssh_access   = lookup(var.k8s_cluster_properties, "allow_worker_ssh_access", true)
   oke_operator_install_k9s      = lookup(var.k8s_cluster_properties, "operator_install_k9s", true)
   oke_cluster_addons            = lookup(var.k8s_cluster_properties, "cluster_addons", var.cluster_addons)
@@ -271,8 +280,8 @@ locals {
   obs_oke_k8s_allow_rules_public_lb = lookup(var.obs_k8s_cluster_properties, "k8s_allow_rules_public_lb", var.obs_k8s_allow_rules_public_lb)
   obs_oke_k8s_allow_rules_int_lb    = lookup(var.obs_k8s_cluster_properties, "k8s_allow_rules_int_lb", var.obs_k8s_allow_rules_int_lb)
   obs_oke_tags                      = lookup(var.obs_k8s_cluster_properties, "tags", var.tags)
-  obs_oke_ssh_private_key           = lookup(var.obs_k8s_cluster_properties, "ssh_private_key", var.ssh_private_key)
-  obs_oke_ssh_public_key            = lookup(var.obs_k8s_cluster_properties, "ssh_public_key", var.ssh_public_key)
+  obs_oke_ssh_private_key           = lookup(var.obs_k8s_cluster_properties, "ssh_private_key", local.ssh_private_key)
+  obs_oke_ssh_public_key            = lookup(var.obs_k8s_cluster_properties, "ssh_public_key", local.ssh_public_key)
   obs_oke_allow_worker_ssh_access   = lookup(var.obs_k8s_cluster_properties, "allow_worker_ssh_access", true)
   obs_oke_operator_install_k9s      = lookup(var.obs_k8s_cluster_properties, "operator_install_k9s", true)
   obs_oke_cluster_addons            = lookup(var.obs_k8s_cluster_properties, "cluster_addons", var.cluster_addons)

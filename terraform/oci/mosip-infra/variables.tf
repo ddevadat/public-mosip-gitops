@@ -112,6 +112,13 @@ variable "operator_os_version" {
   description = "The OS/image version for operator."
 }
 
+variable "bastion_properties" {
+  default = {
+    name = "bastion"
+  }
+  description = "Default bastion properties"
+  type        = any
+}
 
 variable "k8s_cluster_properties" {
   default = {
@@ -376,6 +383,6 @@ variable "operator_user" {
 
 
 variable "workload_name" {
-  default     = "MOSIP"
-  type        = string
+  default = "MOSIP"
+  type    = string
 }

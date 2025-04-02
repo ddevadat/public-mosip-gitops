@@ -1,6 +1,6 @@
 output "workload" {
   value = {
-    compute_ssh_key   = var.ssh_private_key
+    compute_ssh_key   = base64encode(local.bastion_ssh_private_key)
     bastion_public_ip = module.operator.public_ip
     operator_hosts_maps = {
       operator = module.operator.private_ip
