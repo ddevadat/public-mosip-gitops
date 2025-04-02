@@ -1,0 +1,3 @@
+opentofu_version: 1.6.2
+rancher_admin_password: changeme1234
+rancher_hostname: rancher.{{domain}}

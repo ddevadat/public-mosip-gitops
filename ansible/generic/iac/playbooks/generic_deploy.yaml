@@ -1,0 +1,129 @@
+### 1. Wireguard Installation ### 
+
+- hosts: operator
+  become: true
+  roles:
+    - generic.iac.docker
+    - generic.iac.wireguard
+
+##################################
+
+
+
+### 2. Observation cluster setup ####
+
+- hosts: operator
+  become: true
+  environment:
+    OCI_CLI_AUTH: "instance_principal"
+    OCI_ANSIBLE_AUTH_TYPE: "instance_principal"
+    KUBECONFIG: "/home/opc/.kube/oke_obs_config"
+    K8S_AUTH_KUBECONFIG: "/home/opc/.kube/oke_obs_config"
+  roles:
+    - generic.iac.oke_common
+
+  tasks:
+    - name: Install Reflector
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: install_reflector.yaml
+
+    - name: Install Longhorn
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: install_longhorn.yaml
+
+    - name: Install Cert-Manager
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: install_certmanager.yaml
+
+    - name: Install Nginx Ingress Controller
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: install_nginx_controller.yaml
+
+    - name: Update DNS Zone Records
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: update_zone_record.yaml
+
+
+##################################
+
+## 3. MOSIP component deployment
+
+- hosts: operator
+  become: true
+  environment:
+    OCI_CLI_AUTH: "instance_principal"
+    OCI_ANSIBLE_AUTH_TYPE: "instance_principal"
+    KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
+    K8S_AUTH_KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
+  roles:
+    - generic.iac.generic_deploy
+
+- hosts: operator
+  become: true
+  environment:
+    OCI_CLI_AUTH: "instance_principal"
+    OCI_ANSIBLE_AUTH_TYPE: "instance_principal"
+    KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
+  tasks:
+    - name: Seed Vault Secrets
+      ansible.builtin.include_role:
+        name: generic.iac.generic_deploy
+        tasks_from: seed_vault_secrets.yaml
+
+- hosts: operator
+  become: true
+  environment:
+    OCI_CLI_AUTH: "instance_principal"
+    OCI_ANSIBLE_AUTH_TYPE: "instance_principal"
+    KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
+    K8S_AUTH_KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
+  tasks:
+    - name: Create ArgoCD application
+      ansible.builtin.include_role:
+        name: generic.iac.generic_deploy
+        tasks_from: create_argocd_application.yaml
+
+##################################
+
+### 4. Rancher Installation ######
+
+- hosts: operator
+  become: true
+  environment:
+    OCI_CLI_AUTH: "instance_principal"
+    OCI_ANSIBLE_AUTH_TYPE: "instance_principal"
+    KUBECONFIG: "/home/opc/.kube/oke_obs_config"
+    K8S_AUTH_KUBECONFIG: "/home/opc/.kube/oke_obs_config"
+  roles:
+    - generic.iac.oke_common
+
+  tasks:
+    - name: Install Keycloak
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: install_keycloak.yaml
+
+
+    - name: Configure Keycloak SAML Client
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: configure_keycloak_saml_client.yaml
+
+    - name: Install Rancher
+      ansible.builtin.include_role:
+        name: generic.iac.rancher_oke_deploy
+        tasks_from: install_rancher.yaml
+
+- hosts: operator
+  become: true
+  environment:
+    KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
+  roles:
+    - generic.iac.rancher_oke_import_cluster
+
+##################################

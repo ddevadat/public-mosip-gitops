@@ -1,0 +1,12 @@
+activemq-artemis: 
+  fullnameOverride: artemis
+  nameOverride: mq
+  artemisUser: artemis
+  artemisPassword: "<path:ocivault#mosip_activemq_password#latest | base64decode>"
+  istio:
+    enabled: true
+    hosts:
+      - activemq.<path:ocivault#mosip_domain#latest | base64decode>
+    ingressController:
+      name: ingressgateway-internal
+    prefix: /

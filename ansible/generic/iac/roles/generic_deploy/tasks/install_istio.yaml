@@ -1,0 +1,114 @@
+- name: Create project directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /home/opc/istio
+
+- name: Add a istio helm repository
+  kubernetes.core.helm_repository:
+    name: istio
+    repo_url: https://istio-release.storage.googleapis.com/charts
+
+
+- name: Install istio base
+  kubernetes.core.helm:
+    name: istio-base
+    chart_ref: istio/base
+    chart_version: "{{istio_chart_version}}"
+    release_namespace: istio-system
+    create_namespace: true
+    update_repo_cache: true
+
+- name: Install istiod
+  kubernetes.core.helm:
+    name: istiod
+    chart_ref: istio/istiod
+    chart_version: "{{istio_chart_version}}"
+    release_namespace: istio-system
+    create_namespace: true
+    update_repo_cache: true
+    values: 
+      defaults:
+        meshConfig:
+          enablePrometheusMerge: true
+          accessLogFile: /dev/stdout
+          pathNormalization:
+            normalization: MERGE_SLASHES
+          defaultConfig:
+            proxyMetadata:
+              ISTIO_META_IDLE_TIMEOUT: 0s
+            holdApplicationUntilProxyStarts: true
+            gatewayTopology:
+              numTrustedProxies: 2
+          extensionProviders:
+          - name: oauth2-proxy
+            envoyExtAuthzHttp:
+              service: oauth2-proxy.oauth2-proxy.svc.cluster.local
+              port: 80
+              headersToDownstreamOnDeny:
+              - content-type
+              - set-cookie
+              headersToUpstreamOnAllow:
+              - authorization
+              - path
+              - x-auth-access-token
+              - x-auth-request-user
+              - x-auth-request-email
+              - x-auth-request-preferred-username
+              - x-auth-request-groups
+              includeAdditionalHeadersInCheck:
+                X-Auth-Request-Redirect: https://%REQ(:authority)%%REQ(:path)%
+              includeRequestHeadersInCheck:
+              - authorization
+              - cookie
+
+- name: Install istio gateway
+  kubernetes.core.helm:
+    name: istio-ingress
+    chart_ref: istio/gateway
+    chart_version: "{{istio_chart_version}}"
+    release_namespace: istio-system
+    create_namespace: true
+    update_repo_cache: true
+    values:
+      defaults:
+        service:
+          type: LoadBalancer
+          ports:
+          - name: tcp-status-port
+            port: 15021
+            targetPort: 15021
+          - name: http
+            port: 80
+            targetPort: 8080
+          - name: tcp-postgres
+            port: 5432
+            targetPort: 5432
+          - name: https
+            port: 443
+            targetPort: 8081
+          annotations: 
+            oci.oraclecloud.com/load-balancer-type: "nlb"
+            oci-network-load-balancer.oraclecloud.com/internal: "true"
+            oci-network-load-balancer.oraclecloud.com/is-preserve-source: "false"
+            oci-network-load-balancer.oraclecloud.com/subnet: "{{lb_int_subnet_id_oke_k8s_cluster}}"
+            oci-network-load-balancer.oraclecloud.com/oci-network-security-groups: "{{nsg_int_lb_oke_k8s_cluster}}"
+          externalTrafficPolicy: "Local"
+
+
+- name: "Update ssl certifcates"
+  template:
+    src: "istio-gateway/{{item}}.j2"
+    dest: "/home/opc/istio/{{item}}"
+    mode: '0755'
+  with_items:
+    - certificate.yaml
+    - istio-gateway.yaml
+
+- name: Create k8s objects for certmanager
+  shell: |
+    kubectl apply -f .
+  args:
+    chdir: /home/opc/istio/

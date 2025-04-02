@@ -1,0 +1,62 @@
+
+{{- if .Values.minio_istio_enabled }}
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: minio
+spec:
+  hosts:
+  - {{ .Values.minio_externalHost | quote}}
+  gateways:
+  - minio
+  http:
+  - name: minio
+    match:
+    - port: 9000
+    route:
+    - destination:
+        host: minio
+        port:
+           number: 9000
+    headers:
+      request:
+        set:
+          x-forwarded-proto: https
+  - name: http
+    match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: minio
+        port:
+           number: 9001
+    headers:
+      request:
+        set:
+          x-forwarded-proto: https
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: minio
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - {{ .Values.minio_externalHost | quote}}
+  - port:
+        name: minio
+        number: 9000
+        protocol: HTTP
+    hosts:
+        - {{ .Values.minio_externalHost | quote}}
+
+
+{{- end }}

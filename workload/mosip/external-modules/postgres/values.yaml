@@ -1,0 +1,31 @@
+postgresHost: postgres.<path:ocivault#mosip_domain#latest | base64decode>
+
+postgresql:
+  commonAnnotations: 
+    argocd.argoproj.io/sync-wave: "-97"
+  global:
+    storageClass: longhorn
+  auth:
+    database: "mosippdb"
+    password: <path:ocivault#mosip_pg_password#latest | base64decode> 
+  resources:
+    limits: {}
+    requests: 
+      cpu: 3000m
+      memory: 3000Mi
+
+  primary:
+    extendedConfiguration: |
+      max_connections=1000
+      wal_level=logical
+      max_wal_senders=20
+      max_replication_slots=10
+
+    initdb:
+      scripts:
+        create_dbs_and_users.sh: |
+            #!/bin/bash
+            PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -d postgres -c "CREATE ROLE bn_keycloak WITH LOGIN NOSUPERUSER CREATEDB CREATEROLE INHERIT REPLICATION CONNECTION LIMIT -1 PASSWORD '"$POSTGRES_PASSWORD"';"
+            PGPASSWORD=$POSTGRES_PASSWORD psql -U postgres -d postgres -c "CREATE DATABASE bitnami_keycloak WITH OWNER = bn_keycloak TEMPLATE = template0 ENCODING = 'UTF8' TABLESPACE = pg_default CONNECTION LIMIT = -1;"
+
+

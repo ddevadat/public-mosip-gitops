@@ -1,0 +1,10 @@
+- hosts: operator
+  become: true
+  environment:
+    OCI_CLI_AUTH: "instance_principal"
+    OCI_ANSIBLE_AUTH_TYPE: "instance_principal"
+    KUBECONFIG: "/home/opc/.kube/config"
+  roles:
+    - generic.iac.generic_undeploy
+
+

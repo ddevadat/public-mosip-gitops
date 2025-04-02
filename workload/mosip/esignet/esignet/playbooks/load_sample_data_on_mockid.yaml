@@ -1,0 +1,28 @@
+- name: Load Sample Data on Mock ID
+  hosts: bastion
+  tasks:
+    - name: "Upload data loader script"
+      template:
+        src: "/tmp/working-directory/upload_data_to_mock_esignet.py.j2"
+        dest: "/tmp/working-directory/upload_data_to_mock_esignet.py"
+        mode: '0755'
+
+    - name: Check if data load is already done
+      stat:
+        path: /tmp/working-directory/data_load.done
+      register: data_load_file
+
+    - name: Load sample seed data to mock id
+      shell: |
+        #!/bin/bash
+        cd /tmp/working-directory
+        python3 upload_data_to_mock_esignet.py /tmp/working-directory/sample_data2.csv
+        if [ $? -eq 0 ]; then
+          echo "Data load completed successfully" > /tmp/working-directory/data_load.done
+        fi
+      register: data_load
+      when: not data_load_file.stat.exists
+
+    - name: Debug data_load stdout
+      debug:
+        var: data_load.stdout

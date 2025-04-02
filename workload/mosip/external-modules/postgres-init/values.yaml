@@ -1,0 +1,85 @@
+
+postgres-init:
+  backoffLimit: 6
+  jobAnnotations:
+    argocd.argoproj.io/sync-wave: "-96"
+  dbUserPasswords:
+    dbuserPassword: <path:ocivault#mosip_pg_password#latest | base64decode> 
+
+  databases:
+    mosip_master:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_audit:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_keymgr:
+      enabled: true
+      host: "postgres-postgresql"
+      port: 5432
+      su:
+        user: postgres
+        secret:
+          name: postgres-postgresql
+          key: postgres-password
+      dml: 1
+      repoUrl: https://github.com/mosip/keymanager.git
+      branch: release-1.2.0.1-B4
+
+    mosip_kernel:
+      enabled: true
+      branch: release-1.2.0.1 
+
+    mosip_idmap:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_prereg:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_idrepo:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_ida:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_credential:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_regprc:
+      enabled: true
+      branch: release-1.2.0.x
+
+    mosip_pms:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_hotlist:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_resident:
+      enabled: true
+      branch: release-1.2.0.1
+
+    mosip_toolkit:
+      enabled: true
+      branch: release-1.2.0
+  
+    mosip_digitalcard:
+      enabled: false
+      branch: release-1.2.0.1
+
+    mosip_esignet:
+      enabled: false
+      branch: release-1.1.0
+
+    mosip_mockidentitysystem:
+      enabled: false
+      branch: 0.9.0

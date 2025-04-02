@@ -1,0 +1,24 @@
+
+{{- $configs := .Files.Glob "configs/*" }}
+{{ if $configs }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-ansible-inventory-internal
+  namespace: {{ .Values.namespace }}
+data:
+{{ tpl (.Files.Glob "configs/*").AsConfig .| indent 2 }}
+{{ end }}
+
+---
+
+{{- $playbooks := .Files.Glob "playbooks/*" }}
+{{ if $playbooks }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-ansible-playbooks-internal
+  namespace: {{ .Values.namespace }}
+data:
+{{ (.Files.Glob "playbooks/*").AsConfig | indent 2 }}
+{{ end }}

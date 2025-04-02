@@ -1,0 +1,37 @@
+domain_name: <path:ocivault#mosip_domain#latest | base64decode>
+landing_page_host: landingpage.<path:ocivault#mosip_domain#latest | base64decode>
+
+landing-page: 
+  istio:
+    host: landingpage.<path:ocivault#mosip_domain#latest | base64decode>
+    enabled: true
+    ingressController:
+      name: ingressgateway-internal     ### Temporary changed. Initially set to ingressgateway-internal
+    prefix: /
+  landing: 
+    version: oci-daas-v1.2.0.1-B4
+    name: oci-mosip-sandbox
+    api: api.<path:ocivault#mosip_domain#latest | base64decode>
+    apiInternal: api-internal.<path:ocivault#mosip_domain#latest | base64decode>
+    admin: admin.<path:ocivault#mosip_domain#latest | base64decode>
+    prereg: prereg.<path:ocivault#mosip_domain#latest | base64decode>
+    kafka: kafka.<path:ocivault#mosip_domain#latest | base64decode>
+    kibana: kibana.<path:ocivault#mosip_domain#latest | base64decode>
+    activemq: activemq.<path:ocivault#mosip_domain#latest | base64decode>
+    minio: minio.<path:ocivault#mosip_domain#latest | base64decode>
+    keycloak: iam.<path:ocivault#mosip_domain#latest | base64decode>
+    regclient: regclient.<path:ocivault#mosip_domain#latest | base64decode>
+    pmp: pmp.<path:ocivault#mosip_domain#latest | base64decode>
+    compliance: compliance.<path:ocivault#mosip_domain#latest | base64decode>
+    resident: resident.<path:ocivault#mosip_domain#latest | base64decode>
+    esignet: esignet.<path:ocivault#mosip_domain#latest | base64decode>
+    smtp: smtp.<path:ocivault#mosip_domain#latest | base64decode>
+    injiweb: injiweb.<path:ocivault#mosip_domain#latest | base64decode>
+    argocd: argocd.<path:ocivault#mosip_domain#latest | base64decode>
+    rancher: rancher.<path:ocivault#mosip_domain#latest | base64decode>
+    keycloakrancher: keycloak-rancher.<path:ocivault#mosip_domain#latest | base64decode>
+    healthservices: healthservices.<path:ocivault#mosip_domain#latest | base64decode>
+    postgres: 
+      host: postgres.<path:ocivault#mosip_domain#latest | base64decode>
+      port: 5432
+

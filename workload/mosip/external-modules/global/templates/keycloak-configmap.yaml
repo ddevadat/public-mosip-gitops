@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-host
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "keycloak,config-server,esignet,mimoto,inji"
+data:
+  keycloak-internal-host: keycloak.keycloak
+  keycloak-internal-url: https://{{ .Values.keycloak.externalhost }}       ## before http://keycloak.keycloak 
+  keycloak-internal-service-url: https://{{ .Values.keycloak.externalhost }}    # This is added for 1.3.0-beta.1-develop
+  keycloak-external-host: {{ .Values.keycloak.externalhost }}
+  keycloak-external-url: https://{{ .Values.keycloak.externalhost }}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-env-vars
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "esignet,mimoto,inji"
+data:
+  KEYCLOAK_ADMIN_USER: admin
+  KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: "1"
+  KEYCLOAK_CACHE_OWNERS_COUNT: "1"
+  KEYCLOAK_CREATE_ADMIN_USER: "true"
+  KEYCLOAK_DATABASE_HOST: postgres-postgresql.postgres
+  KEYCLOAK_DATABASE_NAME: bitnami_keycloak
+  KEYCLOAK_DATABASE_PORT: "5432"
+  KEYCLOAK_DATABASE_USER: bn_keycloak
+  KEYCLOAK_ENABLE_STATISTICS: "false"
+  KEYCLOAK_ENABLE_TLS: "false"
+  KEYCLOAK_HTTP_PORT: "8080"
+  KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: ""
+  KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: kubernetes.KUBE_PING
+  KEYCLOAK_JGROUPS_TRANSPORT_STACK: tcp
+  KEYCLOAK_MANAGEMENT_USER: manager
+  KEYCLOAK_PROXY_ADDRESS_FORWARDING: "true"

@@ -1,0 +1,47 @@
+- name: Add a rancher helm repository
+  kubernetes.core.helm_repository:
+    name: rancher-latest
+    repo_url: https://releases.rancher.com/server-charts/latest
+
+- name: Install rancher
+  kubernetes.core.helm:
+    name: rancher
+    chart_ref: rancher-latest/rancher
+    release_namespace: cattle-system
+    chart_version: "{{rancher_chart_version}}"
+    create_namespace: true
+    update_repo_cache: true
+    wait: true
+    values:
+      hostname: "rancher.{{domain}}"
+      bootstrapPassword: "{{rancher_admin_password}}"
+      tls: external
+      extraEnv:
+      - name: CATTLE_AGENT_TLS_MODE
+        value: "system-store"
+      ingress: 
+        tls:
+          source: secret
+        ingressClassName: "nginx"
+
+- name: Create project directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /home/opc/rancher-setup
+
+- name: "Update rancher templates"
+  template:
+    src: "rancher/{{item}}.j2"
+    dest: "/home/opc/rancher-setup/{{item}}"
+    mode: '0755'
+  with_items:
+    - settings.yaml
+
+- name: Apply telemetry-opt setting
+  shell: |
+    kubectl apply -f settings.yaml
+  args:
+    chdir: /home/opc/rancher-setup

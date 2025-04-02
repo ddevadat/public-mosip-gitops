@@ -1,0 +1,48 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-issuer-stage
+  namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: {{acme_server_stage}}
+
+    # Email address used for ACME registration
+    email: {{certificate_email}} # REPLACE THIS WITH YOUR EMAIL!!!
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-issuer
+
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.d-n.be
+            solverName: oci
+            config: {}
+
+--- 
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-issuer-prod
+  namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: {{acme_server_prod}}
+
+    # Email address used for ACME registration
+    email: {{certificate_email}} # REPLACE THIS WITH YOUR EMAIL!!!
+
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-issuer-prod
+
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme.d-n.be
+            solverName: oci
+            config: {}

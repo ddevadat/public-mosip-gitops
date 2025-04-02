@@ -1,0 +1,39 @@
+{{- range .Values.esignet.components }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  {{- if .annotations }}
+  annotations:
+    {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote}}
+    {{- end }}
+    {{- end }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ $.Values.esignet.destination.server }}
+    namespace: {{ .namespace }}
+  project: default
+  source:
+    repoURL: {{ $.Values.esignet.source.repoURL }}
+    targetRevision: {{ $.Values.esignet.source.targetRevision }}
+    path: {{ .path }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+    {{- if .namespace_labels }}
+    managedNamespaceMetadata:
+      labels:
+        {{- range $key, $value := .namespace_labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+---
+{{- end }}

@@ -1,0 +1,69 @@
+- name: Create project directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /home/opc/argocd-setup
+
+- name: "Update argocd templates"
+  template:
+    src: "argocd/{{item}}.j2"
+    dest: "/home/opc/argocd-setup/{{item}}"
+    mode: '0755'
+  with_items:
+    - kustomization.yaml
+    - cmp-plugin.yaml
+    - argocd-server.yaml
+    - argocd-repo-server.yaml
+    - argocd-ingress.yaml
+    - app-project.yaml
+
+- name: Install argocd
+  shell: |
+    kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+    kubectl apply -k .
+  args:
+    chdir: /home/opc/argocd-setup
+
+- name: "Copy deployment check script"
+  copy:
+    src: "check_deployment.sh"
+    dest: "/home/opc/argocd-setup/check_deployment.sh"
+    mode: "0755"
+
+- name: Wait for deployments in argocd namespace
+  shell: bash /home/opc/argocd-setup/check_deployment.sh argocd
+
+- name: Install argocd cli
+  shell: |
+    VERSION=$(curl -L -s https://raw.githubusercontent.com/argoproj/argo-cd/stable/VERSION)
+    curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/download/v$VERSION/argocd-linux-amd64
+    sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+    rm argocd-linux-amd64
+
+- name: Get argocd admin password
+  shell: |
+    admin_password=`kubectl get secret --namespace argocd argocd-initial-admin-secret -o go-template='{{ '{{' }}index .data "password"|base64decode{{ '}}' }}'`
+    echo $admin_password
+  register: argo_admin_password
+
+- name: Update argocd admin password
+  shell: |
+    /usr/local/bin/argocd login grpc.{{domain}} --username admin --password {{argo_admin_password.stdout}}
+    /usr/local/bin/argocd account update-password --server grpc.{{domain}} --current-password {{argo_admin_password.stdout}} --new-password {{argcd_admin_password}}
+  ignore_errors: yes
+
+
+- name: Add core k8s cluster to argocd
+  shell: |
+    /usr/local/bin/argocd login grpc.{{domain}} --username admin --password {{argcd_admin_password}}
+    /usr/local/bin/argocd cluster add oke-k8s-cluster --kubeconfig /home/opc/.kube/oke_k8s_config --name {{oke_k8s_destination_name}}{{env}} --yes
+  ignore_errors: yes
+
+- name: Install argocd project
+  shell: |
+    kubectl apply -f app-project.yaml
+  args:
+    chdir: /home/opc/argocd-setup
+

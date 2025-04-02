@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Namespace where ArgoCD applications are located
+NAMESPACE="argocd"
+
+# Get the list of all ArgoCD applications
+APPLICATIONS=$(kubectl -n $NAMESPACE get applications.argoproj.io -o jsonpath='{.items[*].metadata.name}')
+
+# Check if there are any applications to delete
+if [ -z "$APPLICATIONS" ]; then
+  echo "No ArgoCD applications found in namespace $NAMESPACE."
+  exit 0
+fi
+
+# Loop through each application and delete it
+for app in $APPLICATIONS; do
+  echo "Deleting ArgoCD application: $app"
+  kubectl -n $NAMESPACE delete applications.argoproj.io $app
+done
+
+echo "All ArgoCD applications have been deleted."

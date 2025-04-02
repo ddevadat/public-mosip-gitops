@@ -1,0 +1,37 @@
+
+    
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+prereg-gateway:
+  fullnameOverride: "prereg-gateway"
+  istio:
+    enabled: true
+    ingressController:
+      name: ingressgateway
+    hosts:
+      - prereg.<path:ocivault#mosip_domain#latest | base64decode>
+
+
+prereg-captcha:
+  fullnameOverride: "prereg-captcha"
+
+prereg-application:
+  fullnameOverride: "prereg-application"
+
+prereg-booking:
+  fullnameOverride: "prereg-booking"
+
+prereg-datasync:
+  fullnameOverride: "prereg-datasync"
+
+prereg-batchjob:
+  fullnameOverride: "prereg-batchjob"
+
+prereg-ui:
+  fullnameOverride: "prereg-ui"
+  prereg:
+    apiHost: prereg.<path:ocivault#mosip_domain#latest | base64decode>
+

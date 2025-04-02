@@ -1,0 +1,22 @@
+- name: "Copy rancher terraform files"
+  template:
+    src: "rancher.j2"
+    dest: "/home/opc/rancher/terraform/rancher.tf"
+    mode: "0755"
+
+- name: "Copy rancher bootstrap module terraform files"
+  template:
+    src: "bootstrap.j2"
+    dest: "/home/opc/rancher/terraform/bootstrap/bootstrap.tf"
+    mode: "0755"
+
+
+- name: "Execute rancher terraform"
+  shell: |
+    cd /home/opc/rancher/terraform/
+    /usr/local/bin/tofu init
+    /usr/local/bin/tofu apply -auto-approve
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: opc

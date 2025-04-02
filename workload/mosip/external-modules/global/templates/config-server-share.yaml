@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-server-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "keymanager,kernel,mock-smtp,prereg,regproc,websub,biosdk,packetmanager,datashare,idrepo,abis,pms,admin,ida,print,mosip-file-server,resident,esignet,mimoto,inji"
+data:
+  active_profile_env: default
+  cache_config_url_env: http://config-server.config-server/config/*/default/{{ .Values.spring_config.branch }}/hazelcast_cache.xml
+  consolidator_config_file_url_env: http://config-server.config-server/config/*/default/{{ .Values.spring_config.branch }}/websub-consolidator.toml
+  hub_config_file_url_env: http://config-server.config-server/config/*/default/{{ .Values.spring_config.branch }}/websub-service.toml
+  spring_config_label_env: {{ .Values.spring_config.branch }}
+  spring_config_url_env: http://config-server.config-server/config

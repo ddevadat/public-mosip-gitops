@@ -1,0 +1,85 @@
+monitoring_stack_istio_enabled: true
+grafana_domain: grafana.<path:ocivault#mosip_domain#latest | base64decode>
+prometheus_domain: prom.<path:ocivault#mosip_domain#latest | base64decode>
+
+kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
+      additionalScrapeConfigs:
+      # - job_name: 'process-exporter'
+      #   scrape_interval: 10s
+      #   static_configs:
+      #     - targets:
+      #         - 'process-exporter.process-exporter-ns.svc.cluster.local:9256'
+      - job_name: 'process-exporter'
+        scrape_interval: 10s
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_node_name]
+            target_label: node
+          - source_labels: [__meta_kubernetes_pod_ip]
+            target_label: __address__
+            regex: (.*)
+            replacement: ${1}:9256
+  grafana:
+    adminPassword: "<path:ocivault#mosip_grafana_admin_password#latest | base64decode>"
+    datasources: 
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+        - name: Oracle Cloud Infrastructure Metrics
+          type: oci-metrics-datasource
+          access: proxy
+          disableDeletion: true
+          editable: true
+          jsonData:
+            tenancyOCID: <path:ocivault#mosip_oci_tenancy_id#latest | base64decode>
+            defaultRegion: <path:ocivault#mosip_oci_region#latest | base64decode>
+            environment: "OCI Instance"
+
+    dashboards: 
+      default:
+        ceph-cluster:
+          gnetId: 2842
+          revision: 18
+          datasource: Prometheus
+        ceph-osd-single:
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        ceph-pools:
+          gnetId: 5342
+          revision: 9
+          datasource: Prometheus
+        # minio:
+        #   gnetId: 13502
+        #   revision: 26
+        #   datasource: Prometheus
+    dashboardProviders:
+       dashboardproviders.yaml:
+         apiVersion: 1
+         providers:
+         - name: 'default'
+           orgId: 1
+           folder: ''
+           type: file
+           disableDeletion: true
+           editable: true
+           options:
+             path: /var/lib/grafana/dashboards/default
+    sidecar:
+      datasources:
+        enabled: true
+        label: grafana_datasource
+      dashboards:
+        enabled: true
+        label: grafana_dashboard
+    plugins:
+      - oci-logs-datasource
+      - oci-metrics-datasource
+      - grafana-kubernetes-app
+      - grafana-worldmap-panel
+      - grafana-piechart-panel
+      - btplc-status-dot-panel

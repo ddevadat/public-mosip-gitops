@@ -1,0 +1,25 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+
+resident:
+  fullnameOverride: "resident"
+  istio:
+    corsPolicy:
+      allowOrigins:
+        - prefix: https://resident.<path:ocivault#mosip_domain#latest | base64decode>
+
+resident-ui:
+  fullnameOverride: "resident-ui"
+  resident:
+    apiHost: api-internal.<path:ocivault#mosip_domain#latest | base64decode>
+  istio:
+    ingressController:
+      name: ingressgateway
+    gateways:
+      - resident-ui-gateway
+    prefix: /
+    hosts:
+      - resident.<path:ocivault#mosip_domain#latest | base64decode>

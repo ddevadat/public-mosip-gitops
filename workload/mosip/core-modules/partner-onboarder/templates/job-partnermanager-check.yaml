@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-partnermanager-readiness
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    metadata:
+      labels:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: readiness-check
+        image: {{ .Values.initcontainer.curl_image | default "curlimages/curl:latest" }}
+        command: ["sh", "-c"]
+        args:
+          - |
+            while true; do
+              echo "Checking readiness of partnermanager service...";
+              if curl -sf http://pms-partner.pms/v1/partnermanager/actuator/health; then
+                echo "Service is ready!";
+                exit 0;
+              else
+                echo "Service is not ready, retrying in 5 seconds...";
+                sleep 5;
+              fi
+            done
+      restartPolicy: Never
+      {{- if .Values.initcontainer.imagepullsecret }}
+      imagePullSecrets:
+        - name: {{ .Values.initcontainer.imagepullsecret }}
+      {{- end }}
+  backoffLimit: 4

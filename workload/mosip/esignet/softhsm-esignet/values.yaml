@@ -1,0 +1,10 @@
+softhsm: 
+  fullnameOverride: "softhsm-esignet"
+  securityPIN: <path:ocivault#mosip_softhsm_security_pin#latest>
+  persistence:
+    storageClass: longhorn
+  resources:
+    limits: {}
+    requests:
+      cpu: 100m
+      memory: 20Mi

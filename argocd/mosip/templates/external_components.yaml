@@ -1,0 +1,198 @@
+{{- range .Values.external.components }}
+{{- if eq .name "mosip-monitoring" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  {{- if .annotations }}
+  annotations:
+    {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- end }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ $.Values.external.destination.server }}
+    namespace: {{ .namespace }}
+  project: default
+  sources:
+    - chart: {{ .chart_name }}
+      repoURL: {{ .repo_url }}
+      targetRevision: {{ .chart_version }}
+      helm:
+        releaseName: {{ .name }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+---
+{{- else }}
+{{- if eq .name "cassandra" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  {{- if .annotations }}
+  annotations:
+    {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- end }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ $.Values.external.destination.server }}
+    namespace: {{ .namespace }}
+  project: default
+  source:
+    repoURL: {{ $.Values.external.source.repoURL }}
+    targetRevision: {{ $.Values.external.source.targetRevision }}
+    path: {{ .path }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+    {{- if .namespace_labels }}
+    managedNamespaceMetadata:
+      labels:
+        {{- range $key, $value := .namespace_labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+---
+{{- else }}
+{{- if eq .name "chaos-mesh" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  {{- if .annotations }}
+  annotations:
+    {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- end }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ $.Values.external.destination.server }}
+    namespace: {{ .namespace }}
+  project: default
+  source:
+    repoURL: {{ $.Values.external.source.repoURL }}
+    targetRevision: {{ $.Values.external.source.targetRevision }}
+    path: {{ .path }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+    {{- if .namespace_labels }}
+    managedNamespaceMetadata:
+      labels:
+        {{- range $key, $value := .namespace_labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+---
+{{- else }}
+{{- if eq .name "monitoring-stack" }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  {{- if .annotations }}
+  annotations:
+    {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- end }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ $.Values.external.destination.server }}
+    namespace: {{ .namespace }}
+  project: default
+  source:
+    repoURL: {{ $.Values.external.source.repoURL }}
+    targetRevision: {{ $.Values.external.source.targetRevision }}
+    path: {{ .path }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+    {{- if .namespace_labels }}
+    managedNamespaceMetadata:
+      labels:
+        {{- range $key, $value := .namespace_labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+---
+{{- else }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+  {{- if .annotations }}
+  annotations:
+    {{- range $key, $value := .annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- end }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: {{ $.Values.external.destination.server }}
+    namespace: {{ .namespace }}
+  project: default
+  source:
+    repoURL: {{ $.Values.external.source.repoURL }}
+    targetRevision: {{ $.Values.external.source.targetRevision }}
+    path: {{ .path }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+    {{- if .namespace_labels }}
+    managedNamespaceMetadata:
+      labels:
+        {{- range $key, $value := .namespace_labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
+        {{- end }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,7 @@
+
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+
+websub-consolidator:
+  fullnameOverride: "websub-consolidator"

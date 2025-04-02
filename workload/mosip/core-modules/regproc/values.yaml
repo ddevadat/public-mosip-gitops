@@ -1,0 +1,65 @@
+configserver:
+  domain_name: <path:ocivault#mosip_domain#latest | base64decode>
+  activeProfileEnv: default
+  gitRepo:
+    uri: https://github.com/oci-mosip/mosip-config
+    version: oci-v1.2.0.1-B4
+
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  postgres_client_image: <path:ocivault#mosip_postgres_client_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+regproc-salt:
+  fullnameOverride: "regproc-salt"
+
+regproc-workflow:
+  fullnameOverride: "regproc-workflow"
+
+regproc-status:
+  fullnameOverride: "regproc-status"
+
+
+regproc-camel:
+  fullnameOverride: "regproc-camel"
+
+regproc-pktserver:
+  fullnameOverride: "regproc-pktserver"
+  persistence:
+    enabled: true    ## This needs pvc which supports readwritemany mode. So disabled for now
+
+regproc-group1:
+  fullnameOverride: "regproc-group1"
+  persistence:
+    enabled: true ## This needs pvc which supports readwritemany mode. So disabled for now
+    storageClass: longhorn
+    size: 5Gi 
+
+
+regproc-group2:
+  fullnameOverride: "regproc-group2"
+
+regproc-group3:
+  fullnameOverride: "regproc-group3"
+
+regproc-group4:
+  fullnameOverride: "regproc-group4"
+
+regproc-group5:
+  fullnameOverride: "regproc-group5"
+
+regproc-group6:
+  fullnameOverride: "regproc-group6"
+
+regproc-group7:
+  fullnameOverride: "regproc-group7"
+
+regproc-trans:
+  fullnameOverride: "regproc-trans"
+
+regproc-notifier:
+  fullnameOverride: "regproc-notifier"
+
+regproc-reprocess:
+  fullnameOverride: "regproc-reprocess"

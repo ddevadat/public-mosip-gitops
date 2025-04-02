@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: regclient-certs
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+binaryData:
+  keystore.p12: {{ .Values.regclient_keystore_file }}
+data:
+  Client.crt: |
+    {{ .Values.regclient_client_certificate | trim |  indent 4 }}
+  Client.csr: |
+    {{ .Values.regclient_client_csr |  trim | indent 4 }}
+  Client.key: |
+    {{ .Values.regclient_client_key | trim | indent 4 }}
+  RootCA.crt: |
+    {{ .Values.regclient_root_certificate | trim | indent 4 }}
+  RootCA.key: |
+    {{ .Values.regclient_root_key | trim | indent 4 }}

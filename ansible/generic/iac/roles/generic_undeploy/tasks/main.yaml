@@ -1,0 +1,81 @@
+- name: Create cleanup directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /home/opc/cleanup
+
+- name: "Copy cleanup script"
+  template:
+    src: "{{item}}.j2"
+    dest: "/home/opc/cleanup/{{item}}"
+    mode: '0755'
+  with_items:
+    - uninstall.sh
+    - delete_argocd_app.sh
+
+
+# - name: Uninstall argocd applications
+#   shell: /home/opc/cleanup/delete_argocd_app.sh
+#   ignore_errors: true
+
+- name: Delete k8s objects for certmanager
+  kubernetes.core.k8s:
+    state: absent
+    src: /home/opc/certmanager/{{item}}
+  with_items:
+    - clusterissuer.yaml
+
+
+- name: Uninstall longhorn
+  shell: |
+    kubectl -n longhorn-system patch -p '{"value": "true"}' --type=merge lhs deleting-confirmation-flag
+  ignore_errors: true
+
+
+- name: Uninstall applications
+  shell: /home/opc/cleanup/uninstall.sh {{item}}
+  with_items:
+    - longhorn-system
+    - cert-manager
+    - istio-system
+  ignore_errors: true
+
+# - name: Uninstall argocd
+#   shell: |
+#     kubectl delete -k .
+#   args:
+#     chdir: /home/opc/argocd-setup
+
+- name: Remove zone records
+  oracle.oci.oci_dns_rrset:
+    zone_name_or_id: "{{domain}}"
+    domain: "{{item}}.{{domain}}"
+    rtype: "A"
+    state: absent
+  with_items:
+    - argocd
+    - api
+    - prereg
+    - resident
+    - esignet
+    - spar
+    - grafana
+    - keycloak
+    - opensearch
+    - postgres
+    - api-internal
+    - activemq
+    - kibana
+    - regclient
+    - admin
+    - minio
+    - kafka
+    - pmp
+    - smtp
+    - signup
+    - compliance
+    - odk
+    - keymanager
+

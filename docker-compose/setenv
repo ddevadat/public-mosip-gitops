@@ -1,0 +1,23 @@
+export PRIVATE_REPO_TOKEN=<github_user_token>
+export PRIVATE_REPO_USER=<github_user_name>
+export PRIVATE_REPO=github.com
+export ANSIBLE_BASE_OUTPUT_DIR=$PWD/output
+export IAC_TERRAFORM_MODULES_REPO=https://github.com/oci-mosip/public-mosip-gitops.git
+export IAC_TERRAFORM_MODULES_TAG=mosip-document
+export CONTROL_CENTER_CLOUD_PROVIDER=oci
+export TERRAGRUNT_TFPATH=tofu
+export REMOTE_STATE_S3_REGION=<tf_state_bucket_region>     ## e.g ap-mumbai-1
+export REMOTE_STATE_S3_BUCKET=<tf_state_bucket_name>
+export REMOTE_STATE_S3_ENDPOINT=<tf_state_s3_api_compatible_endpoint>    ## format: https://<oci_namespace>.compat.objectstorage.<region>.oraclecloud.com
+export AWS_REGION=<s3_compatible_api_region>               ## e.g ap-mumbai-1
+export AWS_ACCESS_KEY_ID=<s3_compatible_access_key>
+export AWS_SECRET_ACCESS_KEY=<s3_compatible_secret_key>
+export AWS_ENDPOINT_URL_S3=<s3_api_compatible_endpoint>     ## format: https://<oci_namespace>.compat.objectstorage.<region>.oraclecloud.com
+export TF_VAR_tenancy_ocid=<oci_tenancy_id>
+export TF_VAR_region=<oci_region>
+export TF_VAR_user_ocid=<oci_user_id>
+export TF_VAR_fingerprint=<oci_user_finger_print>
+export TF_VAR_private_key="-----BEGIN PRIVATE KEY-----
+
+-----END PRIVATE KEY-----"
+

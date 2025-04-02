@@ -1,0 +1,7 @@
+- include_tasks: common.yaml
+- include_tasks: install_certmanager.yaml
+- include_tasks: install_istio.yaml
+- include_tasks: install_longhorn.yaml
+- include_tasks: install_reflector.yaml
+- include_tasks: install_argocd.yaml
+- include_tasks: update_zone_record.yaml

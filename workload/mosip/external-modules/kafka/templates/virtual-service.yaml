@@ -1,0 +1,43 @@
+
+{{- if .Values.kafka_istio_enabled }}
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kafka-ui
+spec:
+  hosts:
+  - "*"
+  gateways:
+    - kafka-ui
+  http:
+  - route:
+    - destination:
+        host: {{ .Values.installName }}
+        port:
+          number: 80
+    headers:
+      request:
+        set:
+          x-forwarded-proto: https
+
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: kafka-ui
+spec:
+  selector:
+    istio: ingressgateway-internal
+  servers:
+  - port:
+      number: 80
+      name: kafka-ui
+      protocol: HTTP
+    hosts:
+    - {{ .Values.kafkaUiHost }}
+
+
+{{- end }}

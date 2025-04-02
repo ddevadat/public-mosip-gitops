@@ -1,0 +1,12 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  tcp_image: <path:ocivault#mosip_tcp_image#latest | base64decode>
+  artifactory_ns: artifactory 
+
+biosdk-service:
+  fullnameOverride: "biosdk-service"
+  biosdk:     
+    ## This is url of biosdk lib accessed from within cluster.  BioSDK may be hosted outside the cluster
+    ## in which case change the URL accordingly.
+    zippedLibUrl: http://artifactory.artifactory/artifactory/libs-release-local/biosdk/biosdk-lib.zip
+    bioapiImpl: io.mosip.mock.sdk.impl.SampleSDK

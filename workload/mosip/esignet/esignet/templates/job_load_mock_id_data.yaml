@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mockid-ansible-sa
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mockid-ansible-svc-reader
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mockid-ansible-svc-reader-binding
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+subjects:
+- kind: ServiceAccount
+  name: mockid-ansible-sa 
+  namespace: esignet
+roleRef:
+  kind: ClusterRole
+  name: mockid-ansible-svc-reader 
+  apiGroup: rbac.authorization.k8s.io
+
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mockid-onboarding-on-esignet
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+spec:
+  template:
+    spec:
+      serviceAccountName: mockid-ansible-sa
+      initContainers:
+      - name: init-script
+        image: busybox                      
+        command: ["/bin/sh", "-c"]
+        args:
+          - "cp /root/.oci/install/* /tmp/working-directory/ && cp /root/.oci/playbooks/* /tmp/working-directory/ && chmod +x /tmp/working-directory/* "
+        volumeMounts:
+        - name: install-volume
+          mountPath: /root/.oci/install 
+        - name: playbook-volume
+          mountPath: /root/.oci/playbooks                    
+        - name: writable-dir
+          mountPath: /tmp/working-directory      
+      containers:
+      - name: configmanager
+        image: ghcr.io/oci-sunbird/ociop:latest
+        command: ["ansible-playbook"]
+        args: ["/tmp/working-directory/load_sample_data_on_mockid.yaml", "-i", "/tmp/working-directory/inventory"]
+        volumeMounts:
+        - name: writable-dir
+          mountPath: /tmp/working-directory 
+      restartPolicy: Never
+      volumes:
+      - name: install-volume
+        configMap:
+          name: {{ .Chart.Name }}-install-config
+      - name: playbook-volume
+        configMap:
+          name: {{ .Chart.Name }}-ansible-playbooks
+      - name: writable-dir
+        emptyDir: {}     

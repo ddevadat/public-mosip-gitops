@@ -1,0 +1,47 @@
+- name: Install dependencies
+  package:
+    name:
+      - jq
+      - unzip
+
+- name: "Install opentofu"
+  shell: |
+    wget -q https://github.com/opentofu/opentofu/releases/download/v{{opentofu_version}}/tofu_{{opentofu_version}}_linux_amd64.zip -O /tmp/tofu_{{opentofu_version}}_linux_amd64.zip
+    unzip -o /tmp/tofu_{{opentofu_version}}_linux_amd64.zip -d /usr/local/bin
+    rm /tmp/tofu_{{opentofu_version}}_linux_amd64.zip
+
+- name: Create project directories terraform
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0777'
+  with_items:
+    - /home/opc/rancher/terraform
+
+- name: Create project directories rancher bootstrap
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0777'
+  with_items:
+    - /home/opc/rancher/terraform/bootstrap
+
+
+- name: Get SSL certificate from Kubernetes secret
+  shell: |
+    KUBECONFIG=/home/opc/.kube/oke_obs_config kubectl get secret obs-tls-cert -n cert-manager -o jsonpath="{.data.tls\.crt}"
+  register: ssl_cert_encoded
+  become: yes
+  become_user: opc
+
+- name: Get SSL private key from Kubernetes secret
+  shell: |
+    KUBECONFIG=/home/opc/.kube/oke_obs_config kubectl get secret obs-tls-cert -n cert-manager -o jsonpath='{.data.tls\.key}'
+  register: ssl_cert_key_encoded
+  become: yes
+  become_user: opc
+
+- name: Set SSL certificate and key variables
+  set_fact:
+    ssl_cert: "{{ ssl_cert_encoded.stdout | b64decode }}"
+    ssl_cert_key: "{{ ssl_cert_key_encoded.stdout | b64decode }}"

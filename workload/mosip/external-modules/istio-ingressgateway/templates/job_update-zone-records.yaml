@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: istio-ansible-sa
+  namespace: istio-system
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: istio-ansible-svc-reader
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: istio-ansible-svc-reader-binding
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+subjects:
+- kind: ServiceAccount
+  name: istio-ansible-sa 
+  namespace: istio-system
+roleRef:
+  kind: ClusterRole
+  name: istio-ansible-svc-reader 
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: update-zone-record
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      serviceAccountName: istio-ansible-sa
+      containers:
+      - name: configmanager
+        image: ghcr.io/oci-sunbird/ociop:latest
+        command: ["ansible-playbook"]
+        args: ["/root/.oci/playbooks/update_zone_record_playbook.yaml", "-i", "/root/.oci/inventory/inventory"]
+        volumeMounts:
+        - name: inventory-volume
+          mountPath: /root/.oci/inventory
+        - name: playbooks-volume
+          mountPath: /root/.oci/playbooks
+      restartPolicy: Never
+      volumes:
+      - name: inventory-volume
+        configMap:
+          name: {{ .Chart.Name }}-ansible-inventory
+      - name: playbooks-volume
+        configMap:
+          name: {{ .Chart.Name }}-ansible-playbooks

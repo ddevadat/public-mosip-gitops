@@ -1,0 +1,54 @@
+ansibleenv:
+  zone_compartment_id: <path:ocivault#mosip_zone_compartment_id#latest | base64decode>
+  domain: <path:ocivault#mosip_domain#latest | base64decode>
+  hostname:
+    - api-internal.<path:ocivault#mosip_domain#latest | base64decode>
+    - iam.<path:ocivault#mosip_domain#latest | base64decode>
+domain_ssl_secret_name: <path:ocivault#mosip_domain_ssl_secret_name#latest | base64decode>
+
+
+gateway: 
+  defaults:
+    env: 
+      ISTIO_META_IDLE_TIMEOUT: 300s
+    label:
+        istio: ingressgateway-internal    
+    service:
+      type: LoadBalancer
+      ports:
+      - port: 15021
+        targetPort: 15021
+        name: status-port
+        protocol: TCP
+      - port: 80
+        targetPort: 8080
+        name: http2
+        protocol: TCP
+      - port: 443
+        targetPort: 8080
+        name: https
+        protocol: TCP
+      - port: 61616
+        targetPort: 61616
+        name: activemq
+        protocol: TCP
+      - port: 5432
+        targetPort: 5432
+        name: postgres
+        protocol: TCP
+      - port: 6379
+        targetPort: 6379
+        name: redis
+        protocol: TCP
+      annotations: 
+        oci.oraclecloud.com/load-balancer-type: "lb"
+        oci.oraclecloud.com/ingress-ip-mode: "Proxy"
+        service.beta.kubernetes.io/oci-load-balancer-internal: "true"
+        service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+        service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+        service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"
+        service.beta.kubernetes.io/oci-load-balancer-ssl-ports: "443"    
+        service.beta.kubernetes.io/oci-load-balancer-tls-secret: <path:ocivault#mosip_domain_ssl_secret_name#latest | base64decode>
+        oci.oraclecloud.com/oci-network-security-groups: <path:ocivault#mosip_private_lb_nsg_id#latest | base64decode>
+        service.beta.kubernetes.io/oci-load-balancer-subnet1: <path:ocivault#mosip_private_lb_subnet_id#latest | base64decode>
+        oci.oraclecloud.com/security-rule-management-mode: "None"  

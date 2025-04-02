@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mosip-captcha
+  namespace: captcha
+  annotations:
+    avp.kubernetes.io/path: "ocivault"
+data:
+  prereg-captcha-site-key: <mosip_pre_reg_captcha_site_key>
+  prereg-captcha-secret-key: <mosip_pre_reg_captcha_secret_key>
+  resident-captcha-site-key: <mosip_resident_captcha_site_key>
+  resident-captcha-secret-key: <mosip_resident_captcha_secret_key>
+  esignet-captcha-site-key: <mosip_esignet_captcha_site_key>
+  esignet-captcha-secret-key: <mosip_esignet_captcha_secret_key>

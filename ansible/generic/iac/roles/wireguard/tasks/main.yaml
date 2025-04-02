@@ -1,0 +1,31 @@
+- name: "Create directory"
+  file:
+    path: "/etc/{{ wireguard_name }}/templates"
+    state: directory
+    recurse: yes
+    mode: '0755'
+
+- name: Create docker compose location
+  file:
+    path: "{{wireguard_compose_location}}"
+    state: directory
+    mode: '0755'
+
+- name: "deploy systemd service"
+  template:
+    src: "wireguard.service.j2"
+    dest: "/etc/systemd/system/wireguard.service"
+  notify: Restart Wireguard
+
+- name: "deploy docker compose file"
+  template:
+    src: "wireguard.docker-compose.j2"
+    dest: "{{ wireguard_compose_location }}/docker-compose.yml"
+  notify: Restart Wireguard
+
+- name: "set to auto restart"
+  systemd:
+    enabled: true
+    daemon_reload: true
+    name: "wireguard"
+    state: started

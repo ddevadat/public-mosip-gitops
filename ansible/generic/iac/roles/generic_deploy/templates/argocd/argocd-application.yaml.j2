@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-mosip-apps
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc 
+  project: default
+  source:
+    repoURL: {{application_repo}}
+    targetRevision: {{application_revision}}
+    path: argocd/mosip
+    plugin:
+      name: argocd-vault-plugin-helm
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

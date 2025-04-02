@@ -1,0 +1,45 @@
+
+- name: Install required packages
+  dnf:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+
+
+- name: Add Docker repository
+  shell: |
+    dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install Docker packages
+  dnf:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+
+- name: Enable and start Docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: Enable and start containerd service
+  service:
+    name: containerd
+    enabled: yes
+    state: started
+
+- name: Add cron job to clean Docker system weekly
+  ansible.builtin.cron:
+    name: "docker-clean"
+    state: present
+    special_time: "weekly"
+    job: "/usr/bin/docker system prune -af --volumes"
+

@@ -1,0 +1,11 @@
+artifactory:
+  fullnameOverride: "artifactory"
+  image:
+    registry: bom.ocir.io
+    repository: bmohs4mmcms7/mosipid/artifactory-server
+    # tag: oci-v0.10.0-INJI-esignet  --- doesnt work for esignet. dont use
+    tag: OCI-0.10.0-INJI-jdk11
+  commonAnnotations: 
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "ida,biosdk,packetmanager,idrepo,abis,pms,regproc,admin,ida,print,prereg,resident,regclient,esignet"

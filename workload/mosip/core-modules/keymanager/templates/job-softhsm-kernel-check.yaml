@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-softhsm-kernel-readiness
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    metadata:
+      labels:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: tcp-liveness-check
+        image: {{ .Values.initcontainer.curl_image | default "busybox:latest" }}
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "Waiting for TCP connection on softhsm-kernel..."
+            until nc -z -v -w30 softhsm-kernel.softhsm 80; do
+              echo "Waiting for service..."
+              sleep 5
+            done
+            echo "Service is up!"
+      restartPolicy: Never
+      {{- if .Values.initcontainer.imagepullsecret }}
+      imagePullSecrets:
+        - name: {{ .Values.initcontainer.imagepullsecret }}
+      {{- end }}
+  backoffLimit: 4

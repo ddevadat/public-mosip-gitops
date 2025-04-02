@@ -1,0 +1,99 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  tcp_image: <path:ocivault#mosip_tcp_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory-jdk21
+
+
+datashare:
+  extraEnvVarsCM:
+    - global
+    - config-server-share
+  istio:
+    enabled: false  # Disables VirtualService creation if Istio is used
+  virtualService:
+    enabled: false  # Explicitly disable VirtualService if applicable
+  service:
+    enabled: true   # Ensure service is still enabled, if needed
+
+injiweb:
+  inji_web:
+    inji_web_port: '3004'
+    inji_web_service_host: 'mimoto.mimoto'
+    configmaps:
+      injiweb-ui:
+        DEFAULT_THEME: ''
+        DEFAULT_LANG: 'en'
+        DEFAULT_FEVICON: 'favicon.ico'
+        DEFAULT_TITLE: 'Inji Wallet'
+        MIMOTO_HOST: 'https://injiweb.<path:ocivault#mosip_domain#latest | base64decode>/v1/mimoto'
+  istio:
+    enabled: true
+    ingressController:
+      name: ingressgateway
+    gateways:
+      - name: inji-web-gateway
+        protocol: HTTP
+        portName: http
+        port: 80
+    hosts:
+      - injiweb.<path:ocivault#mosip_domain#latest | base64decode>
+    prefix: /
+
+
+inji-certify:
+  extraVolumes:
+    - name: farmer-config-volume
+      configMap:
+        name: "farmer-identity-config"
+
+  extraVolumeMounts:
+    - name: farmer-config-volume
+      mountPath: /home/mosip/config
+      readOnly: true
+
+  initContainers:
+    - command:
+        - /bin/bash
+        - -c
+        - if [ "$ENABLE_INSECURE" = "true" ]; then HOST=$( env | grep "mosip-api-internal-host" |sed "s/mosip-api-internal-host=//g"); if [ -z "$HOST" ]; then echo "HOST $HOST is empty; EXITING"; exit 1; fi; openssl s_client -servername "$HOST" -connect "$HOST":443  > "$HOST.cer" 2>/dev/null & sleep 2 ; sed -i -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' "$HOST.cer"; cat "$HOST.cer"; /usr/local/openjdk-11/bin/keytool -delete -alias "$HOST" -keystore $JAVA_HOME/lib/security/cacerts  -storepass changeit; /usr/local/openjdk-11/bin/keytool -trustcacerts -keystore "$JAVA_HOME/lib/security/cacerts" -storepass changeit -noprompt -importcert -alias "$HOST" -file "$HOST.cer" ; if [ $? -gt 0 ]; then echo "Failed to add SSL certificate for host $host; EXITING"; exit 1; fi; cp /usr/local/openjdk-11/lib/security/cacerts /cacerts; fi
+      env:
+        - name: ENABLE_INSECURE
+          value: "false"
+  istio:
+    enabled: true
+    ingressController:
+      name: ingressgateway
+    gateways:
+      - name: inji-certify-gateway
+        protocol: HTTP
+        portName: http
+        port: 80
+    hosts:
+      - injicertify.<path:ocivault#mosip_domain#latest | base64decode>
+    prefix: /
+  enable_insecure: false
+  springConfigNameEnv: certify
+  # activeProfileEnv: default,mosipid-identity,mock-identity
+  # activeProfileEnv: default,mock-identity
+  activeProfileEnv: default,csvdp-farmer
+  # activeProfileEnv: default,mosipid-identity
+
+
+injiverify:
+  inji_verify:
+    port: '3004'
+    host: 'mimoto.mimoto'
+  esignet_redirect_url: 'https://esignet.<path:ocivault#mosip_domain#latest | base64decode>/'
+  istio:
+    enabled: true
+    ingressController:
+      name: ingressgateway
+    gateways:
+      - name: inji-verify-gateway
+        protocol: HTTP
+        portName: http
+        port: 80
+    hosts:
+      - injiverify.<path:ocivault#mosip_domain#latest | base64decode>
+    prefix: /

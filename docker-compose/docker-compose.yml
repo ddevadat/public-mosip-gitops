@@ -1,0 +1,10 @@
+services:
+  mosip-control-center:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mosip-control-center
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    entrypoint: [ "/bin/bash", "-c", "tail -f /dev/null" ]

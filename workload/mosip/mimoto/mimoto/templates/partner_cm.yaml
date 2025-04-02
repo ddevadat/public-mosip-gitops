@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: partner-onboarding-env
+  namespace: {{ .Values.namespace }}
+data:
+  mimoto_keybinding_policy_name: {{ .Values.modules.mimoto_keybinding.policy_name | quote }}
+  mimoto_keybinding_policy_group_name: {{ .Values.modules.mimoto_keybinding.policy_group_name  | quote }}
+  mimoto_keybinding_partner_name: {{ .Values.modules.mimoto_keybinding.partner_name  | quote }}
+  partner_org_name: {{ .Values.modules.partner_org_name  | quote }}
+  mimoto_oidc_client_policy_name: {{ .Values.modules.mimoto_oidc_client.policy_name  | quote }}
+  mimoto_oidc_client_policy_group_name: {{ .Values.modules.mimoto_oidc_client.policy_group_name  | quote }}
+  mimoto_oidc_client_partner_name: {{ .Values.modules.mimoto_oidc_client.partner_name  | quote }}
+  mimoto_oidc_client_oidc_client_name: {{ .Values.modules.mimoto_oidc_client.oidc_client_name  | quote }}
+  mimoto_oidc_client_logo_uri: {{ .Values.modules.mimoto_oidc_client.logo_uri  | quote }}
+  mimoto_oidc_client_redirect_uri: {{ .Values.modules.mimoto_oidc_client.redirect_uri  | quote }}
+  

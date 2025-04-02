@@ -1,0 +1,40 @@
+- name: Add a keycloak helm repository
+  kubernetes.core.helm_repository:
+    name: bitnami
+    repo_url: https://charts.bitnami.com/bitnami
+
+- name: Install keycloak
+  kubernetes.core.helm:
+    name: keycloak
+    chart_ref: bitnami/keycloak
+    chart_version: "{{keycloak_chart_version}}"
+    release_namespace: keycloak
+    create_namespace: true
+    update_repo_cache: true
+    wait: true
+    values:
+      proxy: edge
+      production: true
+      containerSecurityContext:
+        readOnlyRootFilesystem: false
+      auth:
+        adminUser: admin
+        adminPassword: "{{keycloak_admin_password}}"
+      postgresql:
+        global:
+          defaultStorageClass: longhorn      
+        enabled: true
+        auth:
+          postgresPassword: "{{postgres_password}}"
+          username: bn_keycloak
+          password: "{{keycloak_db_passsword}}"
+          database: bitnami_keycloak
+          existingSecret: ""
+        architecture: standalone
+      ingress:
+        enabled: true
+        ingressClassName: "nginx"
+        tls: true
+        hostname: "keycloak-rancher.{{domain}}"
+    kubeconfig: "{{ obs_kubeconfig_path }}"
+

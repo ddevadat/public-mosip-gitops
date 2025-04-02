@@ -1,0 +1,20 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+idrepo-saltgen:
+  fullnameOverride: "idrepo-saltgen"
+
+credential:
+  fullnameOverride: "credential"
+
+credentialrequest:
+  fullnameOverride: "credentialrequest"
+
+identity:
+  fullnameOverride: "identity"
+
+vid:
+  fullnameOverride: "vid"
+

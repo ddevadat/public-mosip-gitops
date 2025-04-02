@@ -1,0 +1,10 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+
+mock-smtp:
+  istio: 
+    hosts:
+      - smtp.<path:ocivault#mosip_domain#latest | base64decode>
+  ingressController:
+    istio: ingressgateway-internal

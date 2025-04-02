@@ -1,0 +1,6 @@
+artifactory:
+  fullnameOverride: "artifactory"
+  commonAnnotations: 
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "keymanager,kernel,datashare,ida,biosdk,packetmanager,idrepo,abis,pms,regproc,admin,ida,print,prereg,resident,regclient"

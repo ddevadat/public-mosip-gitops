@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    argocd-autopilot.argoproj-labs.io/default-dest-server: https://{{oke_k8s_cluster_endpoint}}
+    argocd.argoproj.io/sync-options: PruneLast=true
+    argocd.argoproj.io/sync-wave: "-2"
+  creationTimestamp: null
+  name: "{{oke_k8s_destination_name}}{{env}}"
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: "{{oke_k8s_destination_name}}{{env}} project"
+  destinations:
+  - namespace: '*'
+    server: https://{{oke_k8s_cluster_endpoint}}
+    name: "{{oke_k8s_destination_name}}{{env}}"
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  sourceRepos:
+  - '*'

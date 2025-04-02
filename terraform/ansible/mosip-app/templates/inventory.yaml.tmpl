@@ -1,0 +1,20 @@
+all: 
+  hosts: 
+    %{~ for name, ip in all_hosts ~}
+    ${name}:
+      ansible_host: ${ip}
+    %{~ endfor ~}
+  vars:
+    %{~ for varmapkey, varmapval in all_hosts_var_maps ~}
+    ${varmapkey}: '${varmapval}'
+    %{~ endfor ~}
+operator: 
+  hosts: 
+    %{~ for name, ip in operator_hosts_maps ~}
+    ${name}:
+      ansible_host: ${ip}
+    %{~ endfor ~}
+  vars:
+    %{~ for varmapkey, varmapval in operator_hosts_var_maps ~}
+    ${varmapkey}: '${varmapval}'
+    %{~ endfor ~}

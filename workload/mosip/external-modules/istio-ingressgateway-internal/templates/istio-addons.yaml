@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: internal
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway-internal
+  servers:
+  - hosts:
+    - 'api-internal.{{ .Values.ansibleenv.domain }}'
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+---
+

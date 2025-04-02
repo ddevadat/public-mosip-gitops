@@ -1,0 +1,7 @@
+bastion:
+  hosts:
+    bastion:
+      ansible_host: localhost
+      ansible_connection: local
+  vars:
+    domain: "{{ .Values.domain }}"

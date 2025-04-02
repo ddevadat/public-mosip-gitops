@@ -1,0 +1,16 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  tcp_image: <path:ocivault#mosip_tcp_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+keygen: 
+  springConfigNameEnv: kernel
+  softHsmCM: softhsm-kernel-share
+
+keymanager: 
+  metrics:
+    serviceMonitor:
+      enabled: false
+  istio:
+    enabled: true

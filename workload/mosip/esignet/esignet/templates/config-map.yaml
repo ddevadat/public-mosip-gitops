@@ -1,0 +1,24 @@
+{{- $onboarding := .Files.Glob "onboarding/*" }}
+{{ if $onboarding }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-install-config
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+{{ tpl (.Files.Glob "onboarding/*").AsConfig .| indent 2 }}
+{{ end }}
+
+---
+{{- $playbooks := .Files.Glob "playbooks/*" }}
+{{ if $playbooks }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-ansible-playbooks
+  namespace: {{ .Values.namespace }}
+data:
+{{ (.Files.Glob "playbooks/*").AsConfig | indent 2 }}
+{{ end }} 

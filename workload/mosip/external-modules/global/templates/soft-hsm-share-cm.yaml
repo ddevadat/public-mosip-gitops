@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: softhsm-kernel-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "keymanager,biosdk"
+data:
+  PKCS11_PROXY_SOCKET: tcp://softhsm-kernel.softhsm:80
+
+--- 
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: softhsm-ida-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "ida"
+data:
+  PKCS11_PROXY_SOCKET: tcp://softhsm-ida.softhsm:80
+
+--- 
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: softhsm-esignet-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "esignet"
+data:
+  PKCS11_PROXY_SOCKET: tcp://softhsm-esignet.softhsm:80
+
+--- 
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: softhsm-mock-identity-system-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "esignet"
+data:
+  PKCS11_PROXY_SOCKET: tcp://softhsm-mock-id-system.softhsm:80
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: softhsm-certify-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "inji"
+data:
+  PKCS11_PROXY_SOCKET: tcp://softhsm-certify.softhsm:80

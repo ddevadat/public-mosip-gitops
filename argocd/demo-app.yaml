@@ -1,0 +1,22 @@
+kind: Application
+metadata:
+  name: demo-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    name: mosipdoc
+  project: mosipdoc
+  source:
+    repoURL: 'https://github.com/oci-mosip/public-mosip-gitops.git'
+    targetRevision: mosip-document
+    path: workload/mosip/external-modules/demo
+  syncPolicy:
+    syncOptions:
+      - CreateNameSpace=true
+      - ApplyOutOfSyncOnly=true
+    automated:
+      prune: true
+      selfHeal: true

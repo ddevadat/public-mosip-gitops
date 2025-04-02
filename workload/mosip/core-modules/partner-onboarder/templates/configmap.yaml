@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-host
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+  keycloak-internal-host: keycloak.keycloak
+  keycloak-internal-url: http://keycloak.keycloak
+  keycloak-external-host: {{ .Values.configserver.keycloak_hostname }}
+  keycloak-external-url: https://{{ .Values.configserver.keycloak_hostname }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-env-vars
+  namespace: {{ .Values.namespace }}
+data:
+  KEYCLOAK_ADMIN_USER: admin
+  KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: "1"
+  KEYCLOAK_CACHE_OWNERS_COUNT: "1"
+  KEYCLOAK_CREATE_ADMIN_USER: "true"
+  KEYCLOAK_DATABASE_HOST: postgres-postgresql.postgres
+  KEYCLOAK_DATABASE_NAME: bitnami_keycloak
+  KEYCLOAK_DATABASE_PORT: "5432"
+  KEYCLOAK_DATABASE_USER: bn_keycloak
+  KEYCLOAK_ENABLE_STATISTICS: "false"
+  KEYCLOAK_ENABLE_TLS: "false"
+  KEYCLOAK_HTTP_PORT: "8080"
+  KEYCLOAK_JGROUPS_DISCOVERY_PROPERTIES: ""
+  KEYCLOAK_JGROUPS_DISCOVERY_PROTOCOL: kubernetes.KUBE_PING
+  KEYCLOAK_JGROUPS_TRANSPORT_STACK: tcp
+  KEYCLOAK_MANAGEMENT_USER: manager
+  KEYCLOAK_PROXY_ADDRESS_FORWARDING: "true"
+
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: global
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+  installation-name: oci-mosip-sandbox
+  installation-domain: {{ .Values.configserver.domain_name }}
+  mosip-version: develop
+  mosip-api-host: api.{{ .Values.configserver.domain_name }}
+  mosip-api-internal-host: api-internal.{{ .Values.configserver.domain_name }}
+  mosip-prereg-host: prereg.{{ .Values.configserver.domain_name }}
+  mosip-activemq-host: activemq.{{ .Values.configserver.domain_name }}
+  mosip-kibana-host: kibana.{{ .Values.configserver.domain_name }}
+  mosip-admin-host: admin.{{ .Values.configserver.domain_name }}
+  mosip-regclient-host: regclient.{{ .Values.configserver.domain_name }}
+  mosip-minio-host: minio.{{ .Values.configserver.domain_name }}
+  mosip-kafka-host: kafka.{{ .Values.configserver.domain_name }}
+  mosip-iam-external-host: iam.{{ .Values.configserver.domain_name }}
+  mosip-idp-host: idp.{{ .Values.configserver.domain_name }}
+  mosip-postgres-host: postgres.{{ .Values.configserver.domain_name }}
+  mosip-pmp-host: pmp.{{ .Values.configserver.domain_name }}
+  mosip-resident-host: resident.{{ .Values.configserver.domain_name }}
+  mosip-compliance-host: compliance.{{ .Values.configserver.domain_name }}
+  mosip-esignet-host: esignet.{{ .Values.configserver.domain_name }}
+  mosip-smtp-host: smtp.{{ .Values.configserver.domain_name }}
+  mosip-signup-host: signup.{{ .Values.configserver.domain_name }}
+  mosip-injiweb-host: injiweb.{{ .Values.configserver.domain_name }}
+  mosip-injiverify-host: injiverify.{{ .Values.configserver.domain_name }}
+  mosip-injicertify-host: injicertify.{{ .Values.configserver.domain_name }}
+  mosip-healthservices-host: healthservices.{{ .Values.configserver.domain_name }}
+  mosip-inji-datashare-host: datashare-inji.injiweb
+
+  is_glowroot_env: absent

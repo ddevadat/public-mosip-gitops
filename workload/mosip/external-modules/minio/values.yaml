@@ -1,0 +1,12 @@
+minio_istio_enabled: true
+minio_externalHost: minio.<path:ocivault#mosip_domain#latest | base64decode> 
+minio_region: ""
+minio_pretext_value: "mosip"
+domain_ssl_secret_name: <path:ocivault#mosip_domain_ssl_secret_name#latest | base64decode>
+
+minio: 
+  global:
+    storageClass: "longhorn"
+  auth:
+    rootUser: admin
+    rootPassword: "<path:ocivault#mosip_minio_admin_password#latest | base64decode>"

@@ -1,0 +1,37 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ domain | replace('.', '-') }}
+  namespace: istio-system
+spec:
+  privateKey:
+    rotationPolicy: Always
+  dnsNames:
+    - "argocd.{{domain}}"
+    - "grafana.{{domain}}"
+    - "api.{{domain}}"
+    - "prereg.{{domain}}"
+    - "resident.{{domain}}"
+    - "esignet.{{domain}}"
+    - "injiweb.{{domain}}"
+    - "injiverify.{{domain}}"
+    - "injicertify.{{domain}}"
+    - "minio.{{domain}}"
+    - "signup.{{domain}}"
+    - "api-internal.{{domain}}"
+    - "activemq.{{domain}}"
+    - "kibana.{{domain}}"
+    - "regclient.{{domain}}"
+    - "pmp.{{domain}}"
+    - "admin.{{domain}}"
+    - "kafka.{{domain}}"
+    - "postgres.{{domain}}"
+    - "smtp.{{domain}}"
+    - "landingpage.{{domain}}"
+    - "iam.{{domain}}"
+    - "redis.{{domain}}"
+
+  issuerRef:
+    name: letsencrypt-issuer-prod
+    kind: ClusterIssuer
+  secretName: {{ domain | replace('.', '-') }}

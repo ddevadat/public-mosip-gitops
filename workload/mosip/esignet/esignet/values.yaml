@@ -1,0 +1,98 @@
+domain: <path:ocivault#mosip_domain#latest | base64decode> 
+
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  tcp_image: <path:ocivault#mosip_tcp_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory-jdk11
+
+
+esignet:
+  fullnameOverride: "esignet"
+  extraEnvVarsCM:
+    - global
+    - config-server-share
+    - artifactory-share
+    - softhsm-esignet-share
+  # extraEnvVars: []
+  image:
+    registry: docker.io
+    repository: mosipid/esignet
+    tag: 1.4.1
+
+mock-identity-system:
+  fullnameOverride: "mock-identity-system"
+  extraEnvVarsCM:
+    - global
+    - config-server-share
+    - artifactory-share
+    - softhsm-mock-identity-system-share
+  istio:
+    enabled: true
+    gateways:
+      - istio-system/public
+    prefix: /v1/mock-identity-system/
+
+oidc-ui:
+  fullnameOverride: "oidc-ui"
+  image:
+    registry: docker.io
+    repository: mosipid/oidc-ui
+    tag: 1.2.0
+  istio:
+    enabled: true
+    ingressController:
+      name: ingressgateway
+    gateways:
+      - name: oidc-ui-gateway
+        protocol: HTTP
+        portName: http
+        port: 80
+    hosts:
+      - esignet.<path:ocivault#mosip_domain#latest | base64decode>
+    prefix: /
+    
+  oidc_ui:
+    oidc_ui_port: '3000'
+    oidc_service_host: 'esignet.esignet'
+    configmaps:
+      oidc-ui:
+        REACT_APP_API_BASE_URL: 'http://esignet.esignet/v1/esignet'
+        REACT_APP_SBI_DOMAIN_URI: 'http://esignet.esignet'
+        OIDC_UI_PUBLIC_URL: ''
+        SIGN_IN_WITH_ESIGNET_PLUGIN_URL: 'http://artifactory.artifactory-jdk11:80/artifactory/libs-release-local/mosip-plugins/sign-in-with-esignet.zip'
+        DEFAULT_WELLKNOWN: '%5B%7B%22name%22%3A%22OpenID%20Configuration%22%2C%22value%22%3A%22%2F.well-known%2Fopenid-configuration%22%7D%2C%7B%22name%22%3A%22Jwks%20Json%22%2C%22value%22%3A%22%2F.well-known%2Fjwks.json%22%7D%2C%7B%22name%22%3A%22Authorization%20Server%22%2C%22value%22%3A%22%2F.well-known%2Foauth-authorization-server%22%7D%2C%7B%22name%22%3A%22OpenID%20Credential%20Issuer%22%2C%22value%22%3A%22%2F.well-known%2Fopenid-credential-issuer%22%7D%5D'
+        DEFAULT_THEME: ''
+        DEFAULT_LANG: 'en'
+        DEFAULT_FEVICON: 'favicon.ico'
+        DEFAULT_TITLE: 'eSignet'
+        DEFAULT_ID_PROVIDER_NAME: 'eSignet'
+
+
+partner-onboarder:
+  fullnameOverride: "esignet"
+  image:
+    registry: bom.ocir.io
+    repository: bmohs4mmcms7/mosip/partner-onboarder
+    tag: oci-v1.2.0.1-B4
+  serviceAccount:
+    create: true
+    name: esignet
+  backoffLimit: 6
+  onboarding:
+    modules:
+      - name: esignet
+        enabled: true
+
+    configmaps:
+      s3:
+        # s3-host: 'https://minio.<path:ocivault#mosip_domain#latest | base64decode>'
+        s3-user-key: 'admin'
+        s3-region: 'us-east-1'
+        s3-bucket-name: 'onboardesignet'
+      onboarder-namespace:
+        ns_mimoto: mimoto
+        ns_esignet: esignet
+      # onboarding: 
+      #   ENABLE_INSECURE: false
+    secrets:

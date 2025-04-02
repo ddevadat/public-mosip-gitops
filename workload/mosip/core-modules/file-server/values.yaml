@@ -1,0 +1,32 @@
+
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  tcp_image: <path:ocivault#mosip_tcp_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+
+mosip-file-server:
+  fullnameOverride: "mosip-file-server"
+  mosipfileserver:
+    host: 'api.<path:ocivault#mosip_domain#latest | base64decode>'
+    healthCheckUrl: https://api.<path:ocivault#mosip_domain#latest | base64decode>/.well-known/
+    secrets:
+      KEYCLOAK_CLIENT_SECRET: <path:ocivault#mosip_regproc_client_secret#latest | base64decode>
+  istio:
+    enabled: true
+    existingGateway: ''             ## istio-system/public or istio-system/internal
+    # ingressController is only valid if existingGateway is null/empty
+    ingressController:
+      # for public, istio: ingressgateway && for internal, istio: ingressgateway-internal
+      - ingressgateway
+      - ingressgateway-internal
+    prefix:
+      wellKnownPrefix: '/.well-known/'
+      injiPrefix: '/inji/'
+      mosipCerts: '/mosip-certs/'
+    corsPolicy:
+      allowOrigins:
+        - prefix: https://api.<path:ocivault#mosip_domain#latest | base64decode>
+        - prefix: https://api-internal.<path:ocivault#mosip_domain#latest | base64decode>
+        - prefix: https://verifiablecredential.io

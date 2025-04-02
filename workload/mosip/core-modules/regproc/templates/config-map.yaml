@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-server-share
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+  active_profile_env: {{ .Values.configserver.activeProfileEnv }}
+  cache_config_url_env: http://config-server.config-server/config/*/{{ .Values.configserver.activeProfileEnv }}/{{ .Values.configserver.gitRepo.version }}/hazelcast_cache.xml
+  consolidator_config_file_url_env: http://config-server.config-server/config/*/{{ .Values.configserver.activeProfileEnv }}/{{ .Values.configserver.gitRepo.version }}/websub-consolidator.toml
+  hub_config_file_url_env: http://config-server.config-server/config/*/{{ .Values.configserver.activeProfileEnv }}/{{ .Values.configserver.gitRepo.version }}/websub-service.toml
+  spring_config_label_env: {{ .Values.configserver.gitRepo.version }}
+  spring_config_url_env: http://config-server.config-server/config

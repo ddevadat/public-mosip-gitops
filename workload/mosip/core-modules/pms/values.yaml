@@ -1,0 +1,44 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+  
+pms-partner:
+  fullnameOverride: "pms-partner"
+  istio:
+    enabled: true
+    gateways:
+      - istio-system/public
+      - istio-system/internal
+    prefix: /v1/partnermanager
+    corsPolicy:
+      allowOrigins:
+        - prefix: https://pmp.<path:ocivault#mosip_domain#latest | base64decode>
+
+pms-policy:
+  fullnameOverride: "pms-policy"
+  istio:
+    enabled: true
+    gateways:
+      - istio-system/public
+      - istio-system/internal
+    prefix: /v1/policymanager
+    corsPolicy:
+      allowOrigins:
+        - prefix: https://pmp.<path:ocivault#mosip_domain#latest | base64decode>
+
+pmp-ui:
+  fullnameOverride: "pmp-ui"
+  pmp:
+    apiUrl: https://api-internal.<path:ocivault#mosip_domain#latest | base64decode>/
+  istio:
+    enabled: true
+    ingressController:
+      name: ingressgateway-internal
+    gateways:
+      - name: pmp-gateway
+        protocol: HTTP
+        portName: http
+        port: 80
+    hosts:
+      - pmp.<path:ocivault#mosip_domain#latest | base64decode>

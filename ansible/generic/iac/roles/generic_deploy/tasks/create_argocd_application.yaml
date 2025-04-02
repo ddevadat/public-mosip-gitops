@@ -1,0 +1,22 @@
+- name: Create project directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /home/opc/argocd-setup
+
+
+- name: "Update argocd templates"
+  template:
+    src: "argocd/{{item}}.j2"
+    dest: "/home/opc/argocd-setup/{{item}}"
+    mode: '0755'
+  with_items:
+    - argocd-application.yaml
+
+- name: Install argocd application
+  shell: |
+    kubectl apply -f argocd-application.yaml
+  args:
+    chdir: /home/opc/argocd-setup

@@ -1,0 +1,4 @@
+- hosts: bastion
+  become: true
+  roles:
+    - generic.iac.oci_cleanup

@@ -1,0 +1,395 @@
+external:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    targetRevision: mosip-document
+  components:
+    - name: httpbin
+      path: workload/mosip/external-modules/httpbin
+      namespace: istio-system
+      annotations:
+        argocd.argoproj.io/sync-wave: "-99"
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: monitoring-stack
+      path: workload/mosip/external-modules/monitoring-stack
+      namespace: monitoring-stack
+      annotations:
+        argocd.argoproj.io/sync-wave: "-99"
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: istio-ingressgateway
+      path: workload/mosip/external-modules/istio-ingressgateway
+      namespace: istio-system
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+        argocd.argoproj.io/manifest-generate-paths: .
+        
+    - name: istio-ingressgateway-internal
+      path: workload/mosip/external-modules/istio-ingressgateway-internal
+      namespace: istio-system
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+        argocd.argoproj.io/manifest-generate-paths: .
+ 
+    - name: postgres
+      path: workload/mosip/external-modules/postgres
+      namespace: postgres
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: global
+      path: workload/mosip/external-modules/global
+      namespace: global
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: postgres-init
+      path: workload/mosip/external-modules/postgres-init
+      namespace: postgres
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: keycloak
+      path: workload/mosip/external-modules/keycloak
+      namespace: keycloak
+      namespace_labels:
+        istio_injection_label: disabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: softhsm-kernel
+      path: workload/mosip/external-modules/softhsm-kernel
+      namespace: softhsm
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: softhsm-ida
+      path: workload/mosip/external-modules/softhsm-ida
+      namespace: softhsm
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: minio
+      path: workload/mosip/external-modules/minio
+      namespace: minio
+      namespace_labels:
+        istio_injection_label: disabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+  
+    - name: clamav
+      path: workload/mosip/external-modules/clamav
+      namespace: clamav
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: activemq
+      path: workload/mosip/external-modules/activemq
+      namespace: activemq
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: kafka
+      path: workload/mosip/external-modules/kafka
+      namespace: kafka
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: landing-page
+      path: workload/mosip/external-modules/landing-page
+      namespace: landing-page
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+
+core:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    targetRevision: mosip-document
+  components:
+    - name: config-server
+      path: workload/mosip/core-modules/config-server
+      namespace: config-server
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: artifactory
+      path: workload/mosip/core-modules/artifactory
+      namespace: artifactory
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: keymanager
+      path: workload/mosip/core-modules/keymanager
+      namespace: keymanager
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: websub
+      path: workload/mosip/core-modules/websub
+      namespace: websub
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-smtp
+      path: workload/mosip/core-modules/mock-smtp
+      namespace: mock-smtp
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: kernel
+      path: workload/mosip/core-modules/kernel
+      namespace: kernel
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: masterdata-loader
+      path: workload/mosip/core-modules/masterdata-loader
+      namespace: masterdata-loader
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-biosdk
+      path: workload/mosip/core-modules/biosdk
+      namespace: biosdk
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: packetmanager
+      path: workload/mosip/core-modules/packetmanager
+      namespace: packetmanager
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: datashare
+      path: workload/mosip/core-modules/datashare
+      namespace: datashare
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: pre-registration
+      path: workload/mosip/core-modules/prereg
+      namespace: prereg
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: idrepo
+      path: workload/mosip/core-modules/idrepo
+      namespace: idrepo
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: pms
+      path: workload/mosip/core-modules/pms
+      namespace: pms
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-abis
+      path: workload/mosip/core-modules/mock-abis
+      namespace: abis
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-mv
+      path: workload/mosip/core-modules/mock-mv
+      namespace: abis
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: registration-processor
+      path: workload/mosip/core-modules/regproc
+      namespace: regproc
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: admin
+      path: workload/mosip/core-modules/admin
+      namespace: admin
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: ida
+      path: workload/mosip/core-modules/ida
+      namespace: ida
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: print
+      path: workload/mosip/core-modules/print
+      namespace: print
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mosip-file-server
+      path: workload/mosip/core-modules/file-server
+      namespace: mosip-file-server
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: resident
+      path: workload/mosip/core-modules/resident
+      namespace: resident
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: registration-client
+      path: workload/mosip/core-modules/regclient
+      namespace: regclient
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+mimoto:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    targetRevision: mosip-document
+  components:
+    # - name: mimoto
+    #   path: workload/mosip/mimoto/mimoto
+    #   namespace: mimoto
+    #   namespace_labels:
+    #     istio-injection: disabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+esignet:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    targetRevision: mosip-document
+  components:
+    # - name: esignet-postgres-init
+    #   path: workload/mosip/esignet/postgres-init
+    #   namespace: esignet-postgres-init
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: esignet-redis
+    #   path: workload/mosip/esignet/redis
+    #   namespace: redis
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: softhsm-esignet
+    #   path: workload/mosip/esignet/softhsm-esignet
+    #   namespace: softhsm
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: softhsm-mock-id-system
+    #   path: workload/mosip/esignet/softhsm-mock-id-system
+    #   namespace: softhsm
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: esignet
+    #   path: workload/mosip/esignet/esignet
+    #   namespace: esignet
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+inji:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    targetRevision: mosip-document
+  components:
+    # - name: inji
+    #   path: workload/mosip/inji/injiweb
+    #   namespace: inji
+    #   namespace_labels:
+    #     istio-injection: disabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: softhsm-certify
+    #   path: workload/mosip/inji/softhsm-certify
+    #   namespace: softhsm
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: inji-certify-db-init
+    #   path: workload/mosip/inji/inji-certify-db-init
+    #   namespace: inji
+    #   namespace_labels:
+    #     istio_injection_label: enabled
+    #   annotations:
+    #     argocd.argoproj.io/manifest-generate-paths: .

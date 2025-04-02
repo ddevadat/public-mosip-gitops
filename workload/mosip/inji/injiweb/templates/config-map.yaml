@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: farmer-identity-config
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+data:
+  farmer_identity_data.csv: |
+{{ .Files.Get "files/farmer_identity_data.csv" | indent 4 }}

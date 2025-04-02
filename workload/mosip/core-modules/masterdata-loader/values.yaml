@@ -1,0 +1,7 @@
+initcontainer:
+  postgres_client_image: <path:ocivault#mosip_postgres_client_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+
+masterdata-loader:
+  fullnameOverride: "masterdata-loader"
+  mosipDataGithubBranch: 1.2.0.1

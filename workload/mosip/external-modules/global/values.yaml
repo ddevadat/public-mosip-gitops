@@ -1,0 +1,120 @@
+domain_name: <path:ocivault#mosip_domain#latest | base64decode> 
+registrycred: <path:ocivault#mosip_ocir_secret#latest>
+db: 
+  common_password: <path:ocivault#mosip_pg_password#latest | base64decode>
+  database_host: postgres-postgresql.postgres
+  database_port: 5432
+  mock_id_db_name: mosip_mockidentitysystem
+  mock_id_username: mockidsystemuser
+
+keycloak: 
+  externalhost: iam.<path:ocivault#mosip_domain#latest | base64decode> 
+  db_password: <path:ocivault#mosip_pg_password#latest | base64decode> 
+  admin_passsword: <path:ocivault#mosip_keycloak_admin_password#latest | base64decode>
+  mgmt_admin_password: <path:ocivault#mosip_keycloak_manager_password#latest | base64decode>
+
+  clientSecrets:
+    - name: mosip_abis_client_secret
+      secret: "<path:ocivault#mosip_abis_client_secret#latest | base64decode>"
+    - name: mosip_admin_client_secret
+      secret: "<path:ocivault#mosip_admin_client_secret#latest | base64decode>"
+    - name: mosip_admin_services_client_secret
+      secret: "<path:ocivault#mosip_admin_services_client_secret#latest | base64decode>"
+    - name: mosip_auth_client_secret
+      secret: "<path:ocivault#mosip_auth_client_secret#latest | base64decode>"
+    - name: mosip_crereq_client_secret
+      secret: "<path:ocivault#mosip_crereq_client_secret#latest | base64decode>"
+    - name: mosip_creser_client_secret
+      secret: "<path:ocivault#mosip_creser_client_secret#latest | base64decode>"
+    - name: mosip_datsha_client_secret
+      secret: "<path:ocivault#mosip_datsha_client_secret#latest | base64decode>"
+    - name: mosip_ida_client_secret
+      secret: "<path:ocivault#mosip_ida_client_secret#latest | base64decode>"
+    - name: mosip_misp_client_secret
+      secret: "<path:ocivault#mosip_misp_client_secret#latest | base64decode>"
+    - name: mosip_partner_client_secret
+      secret: "<path:ocivault#mosip_partner_client_secret#latest | base64decode>"
+    - name: mosip_partnermanager_client_secret
+      secret: "<path:ocivault#mosip_partnermanager_client_secret#latest | base64decode>"
+    - name: mosip_pms_client_secret
+      secret: "<path:ocivault#mosip_pms_client_secret#latest | base64decode>"
+    - name: mosip_policymanager_client_secret
+      secret: "<path:ocivault#mosip_policymanager_client_secret#latest | base64decode>"
+    - name: mosip_reg_client_secret
+      secret: "<path:ocivault#mosip_reg_client_secret#latest | base64decode>"
+    - name: mosip_regproc_client_secret
+      secret: "<path:ocivault#mosip_regproc_client_secret#latest | base64decode>"
+    - name: mosip_resident_client_secret
+      secret: "<path:ocivault#mosip_resident_client_secret#latest | base64decode>"
+    - name: mosip_prereg_client_secret
+      secret: "<path:ocivault#mosip_prereg_client_secret#latest | base64decode>"
+    - name: mosip_creser_idpass_client_secret
+      secret: "<path:ocivault#mosip_creser_idpass_client_secret#latest | base64decode>"
+    - name: mosip_syncdata_client_secret
+      secret: "<path:ocivault#mosip_syncdata_client_secret#latest | base64decode>"
+    - name: mosip_deployment_client_secret
+      secret: "<path:ocivault#mosip_deployment_client_secret#latest | base64decode>"
+    - name: mpartner_default_auth_secret
+      secret: "<path:ocivault#mpartner_default_auth_secret#latest | base64decode>"
+    - name: mosip_idrepo_client_secret
+      secret: "<path:ocivault#mosip_idrepo_client_secret#latest | base64decode>"
+    - name: mpartner_default_print_secret
+      secret: "<path:ocivault#mpartner_default_print_secret#latest | base64decode>"
+    - name: mosip_hotlist_client_secret
+      secret: "<path:ocivault#mosip_hotlist_client_secret#latest | base64decode>"
+    - name: mpartner_default_mobile_secret
+      secret: "<path:ocivault#mpartner_default_mobile_secret#latest | base64decode>"
+    - name: mpartner_default_digitalcard_secret
+      secret: "<path:ocivault#mpartner_default_digitalcard_secret#latest | base64decode>"
+    - name: mosip_testrig_client_secret
+      secret: "<path:ocivault#mosip_testrig_client_secret#latest | base64decode>"
+    - name: mosip_digitalcard_client_secret
+      secret: "<path:ocivault#mosip_digitalcard_client_secret#latest | base64decode>"
+
+activemq: 
+  host: artemis.activemq
+  port: 61616
+  password: "<path:ocivault#mosip_activemq_password#latest | base64decode>"
+
+minio: 
+  region: ""
+  pretext_value: "mosip"
+  auth:
+    rootUser: admin
+    rootPassword: "<path:ocivault#mosip_minio_admin_password#latest | base64decode>"
+
+msg_gateway:
+  sms_host: mock-sms.mock-sms
+  sms_port: 8080
+  sms_username: mock-sms.user
+  sms_secret: "<path:ocivault#mosip_sms_secret#latest | base64decode>"
+  smtp_host: mock-smtp.mock-smtp
+  smtp_port: 8025
+  smtp_username: mock-smtp.user
+  smtp_secret: "<path:ocivault#mosip_smtp_secret#latest | base64decode>"
+
+softhsm: 
+  kernel_securitypin: <path:ocivault#mosip_softhsm_security_pin#latest | base64decode>
+  esignet_securitypin: <path:ocivault#mosip_softhsm_security_pin#latest | base64decode>
+  mockid_securitypin: <path:ocivault#mosip_softhsm_security_pin#latest | base64decode>
+  ida_securitypin: <path:ocivault#mosip_softhsm_security_pin#latest | base64decode>
+  certify_securitypin: <path:ocivault#mosip_softhsm_security_pin#latest | base64decode>
+
+esignet: 
+  redis_host: redis-master.redis
+  redis_password: <path:ocivault#mosip_esignet_redis_password#latest | base64decode>
+
+spring_config: 
+  branch: oci-v1.2.0.1-B4
+
+mosip: 
+  pre_reg_captcha_site_key: <path:ocivault#mosip_pre_reg_captcha_site_key#latest | base64decode>
+  pre_reg_captcha_secret_key: <path:ocivault#mosip_pre_reg_captcha_secret_key#latest | base64decode>
+  resident_captcha_site_key: <path:ocivault#mosip_resident_captcha_site_key#latest | base64decode>
+  resident_captcha_secret_key: <path:ocivault#mosip_resident_captcha_secret_key#latest | base64decode>
+  esignet_captcha_site_key: <path:ocivault#mosip_esignet_captcha_site_key#latest | base64decode>
+  esignet_captcha_secret_key: <path:ocivault#mosip_esignet_captcha_secret_key#latest | base64decode>
+  mosip_esignet_misp_key: <path:ocivault#mosip_esignet_misp_key#latest | base64decode>
+  mosip_mimoto_wallet_binding_partner_api_key: <path:ocivault#mimoto_wallet_binding_partner_api_key#latest | base64decode>
+  mosip_mimoto_oidc_keystore_password: <path:ocivault#mimoto_oidc_keystore_password#latest | base64decode>
+  mimoto_oidc_partner_clientid: <path:ocivault#mimoto_oidc_partner_clientid#latest | base64decode>

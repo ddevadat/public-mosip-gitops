@@ -1,0 +1,26 @@
+- name: Add a nginx helm repository
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: https://kubernetes.github.io/ingress-nginx
+
+- name: Install nginx controller
+  kubernetes.core.helm:
+    name: ingress-nginx
+    chart_ref: ingress-nginx/ingress-nginx
+    chart_version: "{{nginx_ingress_controller_chart_version}}"
+    release_namespace: ingress-nginx
+    create_namespace: true
+    update_repo_cache: true
+    wait: true
+    values:
+      controller:
+        extraArgs:
+          default-ssl-certificate: ingress-nginx/obs-tls-cert
+        service:
+          externalTrafficPolicy: Local
+          annotations:
+            oci.oraclecloud.com/load-balancer-type: nlb
+            oci-network-load-balancer.oraclecloud.com/internal: true
+            oci-network-load-balancer.oraclecloud.com/is-preserve-source: false
+            oci-network-load-balancer.oraclecloud.com/oci-network-security-groups: "{{nsg_int_lb_oke_obs_cluster}}"
+            oci-network-load-balancer.oraclecloud.com/subnet: "{{lb_int_subnet_id_oke_obs_cluster}}"

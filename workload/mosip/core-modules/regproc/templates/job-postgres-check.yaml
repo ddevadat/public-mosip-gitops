@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: check-postgres-readiness
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    metadata:
+      labels:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: postgres-checker
+        image: {{ .Values.initcontainer.postgres_client_image | default "jbergknoff/postgresql-client" }}
+        command:
+          - 'sh'
+          - '-c'
+          - |
+            until PGPASSWORD="${DB_PASSWORD}" psql -U ${DB_USERNAME} -h ${DB_HOSTNAME} -p ${DB_PORT:-5432} -d ${DB_DBNAME:-mosip_regprc} -c "SELECT 1 FROM information_schema.tables WHERE table_schema = 'regprc' AND table_name = 'registration';" | grep -q 1; do
+              echo "Waiting for registration table to be ready..."
+              sleep 3
+            done
+        env: 
+          - name: DB_HOSTNAME
+            value: "postgres-postgresql.postgres"
+          - name: DB_USERNAME
+            value: "postgres"
+          - name: DB_DBNAME
+            value: "mosip_regprc"
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-common-secrets
+                key: db-dbuser-password
+      restartPolicy: Never
+      {{- if .Values.initcontainer.imagepullsecret }}
+      imagePullSecrets:
+        - name: {{ .Values.initcontainer.imagepullsecret }}
+      {{- end }}
+  backoffLimit: 10

@@ -1,0 +1,49 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory
+
+authmanager:
+  fullnameOverride: "authmanager"
+  extraEnvVarsCM:
+    - global
+    - config-server-share
+    - artifactory-share
+
+
+auditmanager:
+  fullnameOverride: "auditmanager"
+  extraEnvVarsCM:
+    - global
+    - config-server-share
+    - artifactory-share
+
+idgenerator:
+  fullnameOverride: "idgenerator"
+  startupProbe:
+    enabled: true
+  livenessProbe:
+    enabled: true
+  readinessProbe:
+    enabled: true
+
+masterdata:
+  fullnameOverride: "masterdata"
+  corsPolicy:
+    allowOrigins:
+      - exact: https://admin.<path:ocivault#mosip_domain#latest | base64decode>
+
+otpmanager:
+  fullnameOverride: "otpmanager"
+
+pridgenerator:
+  fullnameOverride: "pridgenerator"
+
+ridgenerator:
+  fullnameOverride: "ridgenerator"
+
+syncdata:
+  fullnameOverride: "syncdata"
+
+notifier:
+  fullnameOverride: "notifier"

@@ -1,0 +1,23 @@
+- name: Create project directories
+  file:
+    path: "{{item}}"
+    state: directory
+    mode: '0755'
+  with_items:
+    - /home/opc/reflector
+
+- name: Add a reflector helm repository
+  kubernetes.core.helm_repository:
+    name: emberstack
+    repo_url: https://emberstack.github.io/helm-charts
+
+- name: Install reflector
+  kubernetes.core.helm:
+    name: reflector
+    chart_ref: emberstack/reflector
+    chart_version: "{{reflector_chart_version}}"
+    release_namespace: reflector
+    create_namespace: true
+    update_repo_cache: true
+    wait: true
+

@@ -1,0 +1,37 @@
+- name: Generate kube config for oke k8s cluster
+  shell: |
+    oci ce cluster create-kubeconfig --cluster-id {{oke_k8s_cluster_id}} --file /home/opc/.kube/oke_k8s_config --region {{region}} --token-version 2.0.0  --kube-endpoint PRIVATE_ENDPOINT
+    chown opc:opc /home/opc/.kube/oke_k8s_config
+    chmod 644 /home/opc/.kube/oke_k8s_config
+
+- name: Generate kube config for oke obs k8s cluster
+  shell: |
+    oci ce cluster create-kubeconfig --cluster-id {{oke_obs_cluster_id}} --file /home/opc/.kube/oke_obs_config --region {{region}} --token-version 2.0.0  --kube-endpoint PRIVATE_ENDPOINT
+    chown opc:opc /home/opc/.kube/oke_obs_config
+    chmod 644 /home/opc/.kube/oke_obs_config
+
+- name: Rename context for core k8s
+  shell: |
+    export KUBECONFIG=/home/opc/.kube/oke_k8s_config
+    kubectx oke-k8s-cluster=.
+
+- name: Rename context for obs k8s
+  shell: |
+    export KUBECONFIG=/home/opc/.kube/oke_obs_config
+    kubectx oke-obs-cluster=.
+
+- name: set environment values
+  blockinfile:
+    path: /home/opc/.bashrc
+    block: |
+      export KUBECONFIG=/home/opc/.kube/oke_obs_config
+    state: present
+    create: true
+    owner: opc
+    group: opc
+    mode: '0600'
+
+- name: Install kubernetes pre requisites
+  pip:
+    name: 
+      - kubernetes

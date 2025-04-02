@@ -1,0 +1,82 @@
+initcontainer:
+  curl_image: <path:ocivault#mosip_curl_image#latest | base64decode> 
+  tcp_image: <path:ocivault#mosip_tcp_image#latest | base64decode> 
+  imagepullsecret: "ocir"
+  artifactory_ns: artifactory-jdk21 
+
+modules:
+  partner_org_name: IITB
+  mimoto_keybinding:
+    policy_name: mpolicy-default-mimotokeybinding
+    policy_group_name: mpolicygroup-default-mimotokeybinding
+    partner_name: mpartner-default-mimotokeybinding
+  mimoto_oidc_client:
+    policy_name: mpolicy-default-mimotooidc
+    policy_group_name: mpolicygroup-default-mimotooidc
+    partner_name: mpartner-default-mimotooidc
+    oidc_client_name: mimoto-oidc
+    logo_uri: https://api.<path:ocivault#mosip_domain#latest | base64decode>/inji/inji-home-logo.png
+    redirect_uri: "https://injiweb.<path:ocivault#mosip_domain#latest | base64decode>/redirect"
+
+partner-onboarder:
+  fullnameOverride: "mimoto-onboarding"
+  image:
+    registry: bom.ocir.io
+    repository: bmohs4mmcms7/mosip/partner-onboarder
+    # tag: oci-v1.2.0.1-B4
+    tag: oci-v1.2.0.1-B4-env
+    # pullPolicy: IfNotPresent
+  backoffLimit: 6
+  serviceAccount:
+    create: true
+    name: mimoto
+  extraEnvVarsCM:
+    - global
+    - keycloak-env-vars
+    - keycloak-host
+    - esignet-host
+    - partner-onboarding-env
+
+  extraEnvVarsSecret:
+    - s3
+    - keycloak
+    - keycloak-client-secrets
+  onboarding:
+    modules:
+      - name: mimoto-keybinding
+        enabled: true
+      - name: mimoto-oidc
+        enabled: true
+
+    configmaps:
+      s3:
+        # s3-host: 'https://minio.<path:ocivault#mosip_domain#latest | base64decode>'
+        s3-user-key: 'admin'
+        s3-region: 'us-east-1'
+        s3-bucket-name: 'onboardmimoto'
+      onboarder-namespace:
+        ns_mimoto: mimoto
+        ns_esignet: esignet
+        ns_signup: mimoto
+      # onboarding: 
+      #   ENABLE_INSECURE: false
+    secrets:
+
+mimoto: 
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    accessModes:
+      - ReadWriteMany
+    size: 1Gi
+    # Dir where all incoming packets are stored
+    # Make sure this matches with what is given in the config properties
+    mountDir: /mnt/landing
+    labels:
+      purpose: landing-folder
+    reclaimPolicy: Retain
+  volumes:
+    secrets:
+      mimotooidc:
+        key: oidckeystore.p12
+        path: /home/mosip/certs

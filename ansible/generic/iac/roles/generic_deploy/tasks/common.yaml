@@ -1,0 +1,10 @@
+- name: Install kubernetes pre requisites
+  pip:
+    name: 
+      - kubernetes
+
+
+- name: Creating namespace
+  shell: "kubectl create namespace {{ item }} --dry-run=client -o=yaml | kubectl apply -f -"
+  with_items:
+    - "{{ bootstrap_namespace.split(',') }}"

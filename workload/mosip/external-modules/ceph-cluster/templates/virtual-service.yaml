@@ -1,0 +1,24 @@
+
+{{- if .Values.ceph_istio_enabled }}
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ceph-dashboard-ui
+spec:
+  hosts:
+  - "{{ .Values.ceph_domain }}"
+  gateways:
+    - istio-system/all-hosts
+  http:
+  - route:
+    - destination:
+        host: rook-ceph-mgr-dashboard
+        port:
+          number: 7000
+    headers:
+      request:
+        set:
+          x-forwarded-proto: https
+
+{{- end }}

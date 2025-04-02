@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ domain | replace('.', '-') }}
+  namespace: istio-system
+spec:
+  privateKey:
+    rotationPolicy: Always
+  dnsNames:
+    - "keycloak-rancher.{{domain}}"
+    - "argocd.{{domain}}"
+  issuerRef:
+    name: letsencrypt-issuer-stage
+    kind: ClusterIssuer
+  secretName: "obs-tls-cert"
