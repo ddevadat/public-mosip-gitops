@@ -34,6 +34,6 @@ RUN pip3 install --upgrade pip \
     && mkdir /workdir && cd /workdir \
     && mkdir keys \
     && python3 -m pip install ansible==6.7.0 netaddr oci-cli openshift>=0.6 setuptools>=40.3.0 \
-    && ansible-galaxy collection install community.kubernetes:2.3.2 oracle.oci community.general:9.5.5
+    && ansible-galaxy collection install community.kubernetes:0.9.0 oracle.oci community.general:9.5.5
 
 COPY . iac-run-dir
