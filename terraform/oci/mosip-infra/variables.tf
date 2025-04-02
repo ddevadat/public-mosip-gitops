@@ -124,11 +124,11 @@ variable "k8s_cluster_properties" {
       workload = {
         create           = true
         mode             = "node-pool",
-        size             = 1,
+        size             = 6,
         shape            = "VM.Standard.E4.Flex",
-        ocpus            = 1,
-        memory           = 16,
-        boot_volume_size = 50,
+        ocpus            = 4,
+        memory           = 32,
+        boot_volume_size = 100,
         node_labels = {
           "project"                       = "workload",
           "oke.oraclecloud.com/pool.name" = "workload"

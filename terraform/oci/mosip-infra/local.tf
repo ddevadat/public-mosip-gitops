@@ -22,7 +22,7 @@ locals {
       shape            = "VM.Standard.E4.Flex",
       ocpus            = 4,
       memory           = 32,
-      boot_volume_size = 150,
+      boot_volume_size = 100,
       node_labels = {
         "project"                       = "workload",
         "oke.oraclecloud.com/pool.name" = "workload"

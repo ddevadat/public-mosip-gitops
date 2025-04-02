@@ -72,7 +72,7 @@ variable "shape" {
   default = {
     shape            = "VM.Standard.E4.Flex",
     ocpus            = 1,
-    memory           = 4,
+    memory           = 8,
     boot_volume_size = 50
   }
   description = "Shape of the created operator instance."
