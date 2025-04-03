@@ -1,15 +1,15 @@
-env: dev
+env: "dev"
 region: ""
 home_region: ""
 domain: ""
-tenancy_id: "ocid1.tenancy.oc1..aaaaaa"
-compartment_id: "ocid1.compartment.oc1..aaaaaaa"
-vault_id: "ocid1.vault.oc1."
-vault_enc_key_id: "ocid1.key.oc1."
-ssh_public_key: "ssh-rsa AAAAB3NzaC"   ## ssh public key . This will be used for bastion, operator and oke worker nodes
-ssh_private_key: "LS0tLS1CRUdJTiBQ="   ## ssh private key in base64 format. This will be used for bastion, operator and oke worker nodes  
+tenancy_id: "ocid1.tenancy.oc1..aaaaaaaa"
+compartment_id: "ocid1.compartment.oc1..aaaaaaaa"
+vault_id: "ocid1.vault.oc1...."
+vault_enc_key_id: "ocid1.key.oc1..."
 tags:
   {
-    "Origin": "Terraform",
-    "generic/owner": "FirstName-Lastname",
+    "Project": "MOSIP-Dev",
+    "generic/owner": "FirstName-LastName",
   }
+k8s_cluster_properties:
+  cluster_name: mosipdev
