@@ -24,6 +24,6 @@ appVersion: "1.0"
 
 dependencies:
 - name: activemq-artemis
-  version: 0.0.3
+  version: 0.0.4
   # repository: https://mosip.github.io/mosip-helm
   repository: https://oci-sunbird.github.io/daas-helm
