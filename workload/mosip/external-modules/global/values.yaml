@@ -118,3 +118,4 @@ mosip:
   mosip_mimoto_wallet_binding_partner_api_key: <path:ocivault#mimoto_wallet_binding_partner_api_key#latest | base64decode>
   mosip_mimoto_oidc_keystore_password: <path:ocivault#mimoto_oidc_keystore_password#latest | base64decode>
   mimoto_oidc_partner_clientid: <path:ocivault#mimoto_oidc_partner_clientid#latest | base64decode>
+  resident_oidc_partner_clientid: <path:ocivault#mosip_resident_oidc_partner_clientid#latest | base64decode>
