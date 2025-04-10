@@ -6,7 +6,7 @@ metadata:
   annotations:
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "keycloak,config-server,esignet,mimoto,inji"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "keycloak,config-server,esignet,mimoto,inji,onboarder"
 data:
   keycloak-internal-host: keycloak.keycloak
   keycloak-internal-url: https://{{ .Values.keycloak.externalhost }}       ## before http://keycloak.keycloak 
@@ -24,7 +24,7 @@ metadata:
   annotations:
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "esignet,mimoto,inji"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "esignet,mimoto,inji,onboarder"
 data:
   KEYCLOAK_ADMIN_USER: admin
   KEYCLOAK_AUTH_CACHE_OWNERS_COUNT: "1"

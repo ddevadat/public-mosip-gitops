@@ -5,7 +5,7 @@ config-server:
   fullnameOverride: "config-server"
   gitRepo:
     uri: https://github.com/oci-mosip/mosip-config
-    version: oci-v1.2.0.1-B4
+    version: mosip-document-v1.2.0.1-B4
     ## Folders within the base repo where properties may be found.
     searchFolders: ""
     private: false
@@ -20,7 +20,7 @@ config-server:
       # Based on the user requiremnt the number of multiple sources from where configuration needs to be pulled can be updated below as mentioned.
       - type: git
         uri: "https://github.com/oci-mosip/mosip-config"
-        version: oci-v1.2.0.1-B4
+        version: mosip-document-v1.2.0.1-B4
         spring_cloud_config_server_git_cloneOnStart: true
         spring_cloud_config_server_git_force_pull: true
         spring_cloud_config_server_git_refreshRate: 5
@@ -740,4 +740,11 @@ config-server:
         secretKeyRef:
           name: mimoto-oidc-partner-clientid
           key: mimoto-oidc-partner-clientid
+      enabled: true
+
+    - name: SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_RESIDENT_OIDC_PARTNER_CLIENTID
+      valueFrom:
+        secretKeyRef:
+          name: resident-oidc-partner-clientid
+          key: resident-oidc-partner-clientid
       enabled: true

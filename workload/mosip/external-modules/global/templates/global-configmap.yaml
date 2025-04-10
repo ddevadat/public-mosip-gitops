@@ -6,7 +6,7 @@ metadata:
   annotations:
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "landing-page,config-server,keymanager,kernel,mock-smtp,websub,biosdk,packetmanager,datashare,prereg,idrepo,abis,pms,regproc,admin,ida,print,resident,esignet,mimoto,inji"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "landing-page,config-server,keymanager,kernel,mock-smtp,websub,biosdk,packetmanager,datashare,prereg,idrepo,abis,pms,regproc,admin,ida,print,resident,esignet,mimoto,inji,onboarder"
 data:
   installation-name: oci-mosip-sandbox
   installation-domain: {{ .Values.domain_name }}

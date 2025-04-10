@@ -22,7 +22,7 @@ metadata:
   annotations:
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "config-server,esignet,mimoto,inji"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "config-server,esignet,mimoto,inji,onboarder"
 stringData:
   s3-user-secret: {{ .Values.minio.auth.rootPassword }}  
   s3-pretext-value: {{ .Values.minio.pretext_value }}  

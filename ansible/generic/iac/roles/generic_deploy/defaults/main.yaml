@@ -26,4 +26,4 @@ regclient_keystore_password: 'IkNQTisxN3W//Q=='
 smtp_host: mock-smtp.mock-smtp
 smtp_port: "8025"
 smtp_user: mock-smtp.user
-bootstrap_namespace: "config-server,artifactory,keymanager,websub,mock-smtp,kernel,masterdata-loader,biosdk,packetmanager,datashare,prereg,idrepo,pms,abis,regproc,admin,ida,print,mosip-file-server,resident,regclient"
+bootstrap_namespace: "config-server,artifactory,keymanager,websub,mock-smtp,kernel,masterdata-loader,biosdk,packetmanager,datashare,prereg,idrepo,pms,abis,regproc,admin,ida,print,mosip-file-server,resident,regclient,onboarder"
