@@ -41,11 +41,11 @@ external:
     #   annotations:
     #     argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: global
-    #   path: workload/mosip/external-modules/global
-    #   namespace: global
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: global
+      path: workload/mosip/external-modules/global
+      namespace: global
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     # - name: postgres-init
     #   path: workload/mosip/external-modules/postgres-init
