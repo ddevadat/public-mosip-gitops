@@ -55,13 +55,13 @@ external:
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: keycloak
-    #   path: workload/mosip/external-modules/keycloak
-    #   namespace: keycloak
-    #   namespace_labels:
-    #     istio_injection_label: disabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: keycloak
+      path: workload/mosip/external-modules/keycloak
+      namespace: keycloak
+      namespace_labels:
+        istio_injection_label: disabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     # - name: softhsm-kernel
     #   path: workload/mosip/external-modules/softhsm-kernel
