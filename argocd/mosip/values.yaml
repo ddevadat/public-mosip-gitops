@@ -127,21 +127,21 @@ core:
     repoURL: https://github.com/oci-mosip/public-mosip-gitops
     targetRevision: test-mosip-document
   components:
-    # - name: config-server
-    #   path: workload/mosip/core-modules/config-server
-    #   namespace: config-server
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: config-server
+      path: workload/mosip/core-modules/config-server
+      namespace: config-server
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: artifactory
-    #   path: workload/mosip/core-modules/artifactory
-    #   namespace: artifactory
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: artifactory
+      path: workload/mosip/core-modules/artifactory
+      namespace: artifactory
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     # - name: keymanager
     #   path: workload/mosip/core-modules/keymanager
