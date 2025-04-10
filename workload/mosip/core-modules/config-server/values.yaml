@@ -741,3 +741,10 @@ config-server:
           name: mimoto-oidc-partner-clientid
           key: mimoto-oidc-partner-clientid
       enabled: true
+
+    - name: SPRING_CLOUD_CONFIG_SERVER_OVERRIDES_RESIDENT_OIDC_PARTNER_CLIENTID
+      valueFrom:
+        secretKeyRef:
+          name: resident-oidc-partner-clientid
+          key: resident-oidc-partner-clientid
+      enabled: true
