@@ -12,26 +12,26 @@ external:
         argocd.argoproj.io/sync-wave: "-99"
         argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: monitoring-stack
-    #   path: workload/mosip/external-modules/monitoring-stack
-    #   namespace: monitoring-stack
-    #   annotations:
-    #     argocd.argoproj.io/sync-wave: "-99"
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: monitoring-stack
+      path: workload/mosip/external-modules/monitoring-stack
+      namespace: monitoring-stack
+      annotations:
+        argocd.argoproj.io/sync-wave: "-99"
+        argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: istio-ingressgateway
-    #   path: workload/mosip/external-modules/istio-ingressgateway
-    #   namespace: istio-system
-    #   annotations:
-    #     argocd.argoproj.io/sync-wave: "-100"
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: istio-ingressgateway
+      path: workload/mosip/external-modules/istio-ingressgateway
+      namespace: istio-system
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+        argocd.argoproj.io/manifest-generate-paths: .
         
-    # - name: istio-ingressgateway-internal
-    #   path: workload/mosip/external-modules/istio-ingressgateway-internal
-    #   namespace: istio-system
-    #   annotations:
-    #     argocd.argoproj.io/sync-wave: "-100"
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: istio-ingressgateway-internal
+      path: workload/mosip/external-modules/istio-ingressgateway-internal
+      namespace: istio-system
+      annotations:
+        argocd.argoproj.io/sync-wave: "-100"
+        argocd.argoproj.io/manifest-generate-paths: .
  
     # - name: postgres
     #   path: workload/mosip/external-modules/postgres
