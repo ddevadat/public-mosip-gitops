@@ -277,13 +277,13 @@ core:
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: partner-onboarder
-    #   path: workload/mosip/core-modules/partner-onboarder
-    #   namespace: onboarder
-    #   namespace_labels:
-    #     istio_injection_label: disabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: partner-onboarder
+      path: workload/mosip/core-modules/partner-onboarder
+      namespace: onboarder
+      namespace_labels:
+        istio_injection_label: disabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     - name: mosip-file-server
       path: workload/mosip/core-modules/file-server
