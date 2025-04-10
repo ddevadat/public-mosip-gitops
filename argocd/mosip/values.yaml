@@ -33,13 +33,13 @@ external:
         argocd.argoproj.io/sync-wave: "-100"
         argocd.argoproj.io/manifest-generate-paths: .
  
-    # - name: postgres
-    #   path: workload/mosip/external-modules/postgres
-    #   namespace: postgres
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: postgres
+      path: workload/mosip/external-modules/postgres
+      namespace: postgres
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     - name: global
       path: workload/mosip/external-modules/global
