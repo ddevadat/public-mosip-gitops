@@ -151,155 +151,163 @@ core:
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: websub
-    #   path: workload/mosip/core-modules/websub
-    #   namespace: websub
+    - name: websub
+      path: workload/mosip/core-modules/websub
+      namespace: websub
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-smtp
+      path: workload/mosip/core-modules/mock-smtp
+      namespace: mock-smtp
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: kernel
+      path: workload/mosip/core-modules/kernel
+      namespace: kernel
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: masterdata-loader
+      path: workload/mosip/core-modules/masterdata-loader
+      namespace: masterdata-loader
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-biosdk
+      path: workload/mosip/core-modules/biosdk
+      namespace: biosdk
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: packetmanager
+      path: workload/mosip/core-modules/packetmanager
+      namespace: packetmanager
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: datashare
+      path: workload/mosip/core-modules/datashare
+      namespace: datashare
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: pre-registration
+      path: workload/mosip/core-modules/prereg
+      namespace: prereg
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: idrepo
+      path: workload/mosip/core-modules/idrepo
+      namespace: idrepo
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: pms
+      path: workload/mosip/core-modules/pms
+      namespace: pms
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-abis
+      path: workload/mosip/core-modules/mock-abis
+      namespace: abis
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: mock-mv
+      path: workload/mosip/core-modules/mock-mv
+      namespace: abis
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: registration-processor
+      path: workload/mosip/core-modules/regproc
+      namespace: regproc
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: admin
+      path: workload/mosip/core-modules/admin
+      namespace: admin
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: ida
+      path: workload/mosip/core-modules/ida
+      namespace: ida
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    - name: print
+      path: workload/mosip/core-modules/print
+      namespace: print
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+
+    # - name: partner-onboarder
+    #   path: workload/mosip/core-modules/partner-onboarder
+    #   namespace: onboarder
     #   namespace_labels:
-    #     istio_injection_label: enabled
+    #     istio_injection_label: disabled
     #   annotations:
     #     argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: mock-smtp
-    #   path: workload/mosip/core-modules/mock-smtp
-    #   namespace: mock-smtp
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: mosip-file-server
+      path: workload/mosip/core-modules/file-server
+      namespace: mosip-file-server
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: kernel
-    #   path: workload/mosip/core-modules/kernel
-    #   namespace: kernel
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: resident
+      path: workload/mosip/core-modules/resident
+      namespace: resident
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: masterdata-loader
-    #   path: workload/mosip/core-modules/masterdata-loader
-    #   namespace: masterdata-loader
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: mock-biosdk
-    #   path: workload/mosip/core-modules/biosdk
-    #   namespace: biosdk
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: packetmanager
-    #   path: workload/mosip/core-modules/packetmanager
-    #   namespace: packetmanager
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: datashare
-    #   path: workload/mosip/core-modules/datashare
-    #   namespace: datashare
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: pre-registration
-    #   path: workload/mosip/core-modules/prereg
-    #   namespace: prereg
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: idrepo
-    #   path: workload/mosip/core-modules/idrepo
-    #   namespace: idrepo
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: pms
-    #   path: workload/mosip/core-modules/pms
-    #   namespace: pms
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: mock-abis
-    #   path: workload/mosip/core-modules/mock-abis
-    #   namespace: abis
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: mock-mv
-    #   path: workload/mosip/core-modules/mock-mv
-    #   namespace: abis
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: registration-processor
-    #   path: workload/mosip/core-modules/regproc
-    #   namespace: regproc
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: admin
-    #   path: workload/mosip/core-modules/admin
-    #   namespace: admin
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: ida
-    #   path: workload/mosip/core-modules/ida
-    #   namespace: ida
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: print
-    #   path: workload/mosip/core-modules/print
-    #   namespace: print
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: mosip-file-server
-    #   path: workload/mosip/core-modules/file-server
-    #   namespace: mosip-file-server
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: resident
-    #   path: workload/mosip/core-modules/resident
-    #   namespace: resident
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
-
-    # - name: registration-client
-    #   path: workload/mosip/core-modules/regclient
-    #   namespace: regclient
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: registration-client
+      path: workload/mosip/core-modules/regclient
+      namespace: regclient
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
 mimoto:
   destination:
