@@ -105,7 +105,7 @@ esignet:
   redis_password: <path:ocivault#mosip_esignet_redis_password#latest | base64decode>
 
 spring_config: 
-  branch: oci-v1.2.0.1-B4
+  branch: mosip-document-v1.2.0.1-B4
 
 mosip: 
   pre_reg_captcha_site_key: <path:ocivault#mosip_pre_reg_captcha_site_key#latest | base64decode>
