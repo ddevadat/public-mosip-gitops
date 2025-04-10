@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/oci-mosip/public-mosip-gitops'
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
     path: argocd/mosip
     plugin:
       name: argocd-vault-plugin-helm

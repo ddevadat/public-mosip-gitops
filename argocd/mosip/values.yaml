@@ -3,7 +3,7 @@ external:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/oci-mosip/public-mosip-gitops
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
   components:
     - name: httpbin
       path: workload/mosip/external-modules/httpbin
@@ -125,7 +125,7 @@ core:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/oci-mosip/public-mosip-gitops
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
   components:
     - name: config-server
       path: workload/mosip/core-modules/config-server
@@ -306,7 +306,7 @@ mimoto:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/oci-mosip/public-mosip-gitops
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
   components:
     # - name: mimoto
     #   path: workload/mosip/mimoto/mimoto
@@ -321,7 +321,7 @@ esignet:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/oci-mosip/public-mosip-gitops
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
   components:
     # - name: esignet-postgres-init
     #   path: workload/mosip/esignet/postgres-init
@@ -368,7 +368,7 @@ inji:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/oci-mosip/public-mosip-gitops
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
   components:
     # - name: inji
     #   path: workload/mosip/inji/injiweb

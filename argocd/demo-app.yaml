@@ -11,7 +11,7 @@ spec:
   project: mosipdoc
   source:
     repoURL: 'https://github.com/oci-mosip/public-mosip-gitops.git'
-    targetRevision: mosip-document
+    targetRevision: test-mosip-document
     path: workload/mosip/external-modules/demo
   syncPolicy:
     syncOptions:
