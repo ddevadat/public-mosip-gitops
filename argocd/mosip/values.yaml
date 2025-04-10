@@ -143,13 +143,13 @@ core:
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: keymanager
-    #   path: workload/mosip/core-modules/keymanager
-    #   namespace: keymanager
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: keymanager
+      path: workload/mosip/core-modules/keymanager
+      namespace: keymanager
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     # - name: websub
     #   path: workload/mosip/core-modules/websub
