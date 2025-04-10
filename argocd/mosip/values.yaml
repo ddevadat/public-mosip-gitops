@@ -47,13 +47,13 @@ external:
       annotations:
         argocd.argoproj.io/manifest-generate-paths: .
 
-    # - name: postgres-init
-    #   path: workload/mosip/external-modules/postgres-init
-    #   namespace: postgres
-    #   namespace_labels:
-    #     istio_injection_label: enabled
-    #   annotations:
-    #     argocd.argoproj.io/manifest-generate-paths: .
+    - name: postgres-init
+      path: workload/mosip/external-modules/postgres-init
+      namespace: postgres
+      namespace_labels:
+        istio_injection_label: enabled
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
 
     # - name: keycloak
     #   path: workload/mosip/external-modules/keycloak
