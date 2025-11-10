@@ -122,6 +122,7 @@ variable "bastion_properties" {
 
 variable "k8s_cluster_properties" {
   default = {
+    kubernetes_version      = "v1.32.1"
     cni                     = "flannel"
     cluster_type            = "enhanced"
     vcn_cidr                = ["10.0.0.0/16"]
@@ -150,6 +151,7 @@ variable "k8s_cluster_properties" {
 
 variable "obs_k8s_cluster_properties" {
   default = {
+    kubernetes_version      = "v1.32.1"
     cni                     = "flannel"
     cluster_type            = "enhanced"
     bastion_allowed_cidrs   = ["0.0.0.0/0"]
