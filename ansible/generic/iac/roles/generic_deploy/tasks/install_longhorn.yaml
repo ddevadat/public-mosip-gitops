@@ -12,6 +12,8 @@
     create_namespace: true
     update_repo_cache: true
     values:
+      global:
+        imageRegistry: "docker.io"
       persistence:
         defaultClassReplicaCount: "{{ longhorn_default_replica_count |default('3') }}"
         nfsOptions: "hard,timeo=50,retrans=1"
