@@ -21,6 +21,7 @@
     KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
     K8S_AUTH_KUBECONFIG: "/home/opc/.kube/oke_k8s_config"
   roles:
+    - generic.iac.oke_common
     - generic.iac.generic_deploy
 
 - hosts: operator
