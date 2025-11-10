@@ -1,6 +1,6 @@
 module "oke_cluster" {
   source                       = "oracle-terraform-modules/oke/oci"
-  version                      = "5.2.3"
+  version                      = "5.3.2"
   compartment_id               = local.oke_compartment_id
   tenancy_id                   = var.tenancy_id
   home_region                  = local.oke_home_region
@@ -50,7 +50,7 @@ module "oke_cluster" {
 ### Added for observation cluster
 module "obs_oke_cluster" {
   source                       = "oracle-terraform-modules/oke/oci"
-  version                      = "5.2.3"
+  version                      = "5.3.2"
   compartment_id               = local.obs_oke_compartment_id
   tenancy_id                   = var.tenancy_id
   home_region                  = local.obs_oke_home_region
