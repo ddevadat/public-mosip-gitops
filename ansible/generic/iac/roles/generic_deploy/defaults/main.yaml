@@ -2,7 +2,7 @@ os_user: opc
 avp_version: 1.20.0
 acme_server_stage: https://acme-staging-v02.api.letsencrypt.org/directory
 acme_server_prod: https://acme-v02.api.letsencrypt.org/directory
-application_repo: https://github.com/oci-mosip/public-mosip-gitops
+application_repo: https://github.com/ddevadat/public-mosip-gitops
 application_revision: mosip-document
 istio_chart_version: 1.23.2
 certmanager_chart_version: 1.15.3

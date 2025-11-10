@@ -330,7 +330,7 @@ variable "ssl_cert_type" {
 variable "application_repo" {
   type        = string
   description = "The github repo of application code"
-  default     = "https://github.com/oci-mosip/public-mosip-gitops"
+  default     = "https://github.com/ddevadat/public-mosip-gitops"
 }
 
 

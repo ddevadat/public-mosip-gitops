@@ -2,7 +2,7 @@ external:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    repoURL: https://github.com/ddevadat/public-mosip-gitops
     targetRevision: mosip-document
   components:
     - name: httpbin
@@ -124,7 +124,7 @@ core:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    repoURL: https://github.com/ddevadat/public-mosip-gitops
     targetRevision: mosip-document
   components:
     - name: config-server
@@ -313,7 +313,7 @@ mimoto:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    repoURL: https://github.com/ddevadat/public-mosip-gitops
     targetRevision: mosip-document
   components:
     # - name: mimoto
@@ -328,7 +328,7 @@ esignet:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    repoURL: https://github.com/ddevadat/public-mosip-gitops
     targetRevision: mosip-document
   components:
     # - name: esignet-postgres-init
@@ -375,7 +375,7 @@ inji:
   destination:
     server: https://kubernetes.default.svc
   source:
-    repoURL: https://github.com/oci-mosip/public-mosip-gitops
+    repoURL: https://github.com/ddevadat/public-mosip-gitops
     targetRevision: mosip-document
   components:
     # - name: inji

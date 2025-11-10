@@ -10,7 +10,7 @@ spec:
     name: mosipdoc
   project: mosipdoc
   source:
-    repoURL: 'https://github.com/oci-mosip/public-mosip-gitops.git'
+    repoURL: 'https://github.com/ddevadat/public-mosip-gitops.git'
     targetRevision: mosip-document
     path: workload/mosip/external-modules/demo
   syncPolicy:

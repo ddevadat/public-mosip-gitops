@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc 
   project: default
   source:
-    repoURL: 'https://github.com/oci-mosip/public-mosip-gitops'
+    repoURL: 'https://github.com/ddevadat/public-mosip-gitops'
     targetRevision: mosip-document
     path: argocd/mosip
     plugin:

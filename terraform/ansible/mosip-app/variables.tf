@@ -1,5 +1,5 @@
 variable "ansible_collection_url" {
-  default = "git+https://github.com/oci-mosip/public-mosip-gitops.git#/ansible/generic/iac"
+  default = "git+https://github.com/ddevadat/public-mosip-gitops.git#/ansible/generic/iac"
 }
 
 variable "ansible_collection_tag" {
