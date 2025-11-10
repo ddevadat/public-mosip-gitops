@@ -26,25 +26,3 @@ spec:
        - name: ARGOCD_MAX_CONCURRENT_LOGIN_REQUESTS_COUNT
          value: "0"
 
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
- name: argocd-redis
-spec:
- template:
-   spec:
-     containers:
-     - args:
-       - --save
-       - ""
-       - --appendonly
-       - "no"
-       - --requirepass $(REDIS_PASSWORD)
-       env:
-       - name: REDIS_PASSWORD
-         valueFrom:
-           secretKeyRef:
-             key: auth
-             name: argocd-redis
-       image: docker.io/redis:7.0.15-alpine
